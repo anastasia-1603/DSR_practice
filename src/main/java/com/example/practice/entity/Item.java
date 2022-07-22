@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Item {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String description;
     private String image;
-    private Integer categoryId;
+    private Long categoryId;
 
 }
