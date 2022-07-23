@@ -5,6 +5,7 @@ import com.example.practice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +20,19 @@ public class UserService {
 
     public void create(User user) {
         userRepository.save(user);
+    }
+
+    public List<User> readAll() {
+        return userRepository.findAll();
+    }
+
+    public boolean update(User user, Long id) {
+        if (userRepository.existsById(id)) {
+            user.setId(id);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 
     public void deleteUser(Long id) {
