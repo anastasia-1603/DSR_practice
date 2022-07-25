@@ -26,16 +26,15 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public boolean update(User user, Long id) {
-        if (userRepository.existsById(id)) {
-            user.setId(id);
+    public boolean update(User user) {
+        if (userRepository.existsById(user.getId())) {
             userRepository.save(user);
             return true;
         }
         return false;
     }
 
-    public void deleteUser(Long id) {
+    public void delete(Long id) {
         userRepository.deleteById(id);
     }
 }

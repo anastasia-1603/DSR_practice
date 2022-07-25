@@ -1,41 +1,58 @@
 package com.example.practice.controller;
 
 import com.example.practice.entity.Item;
-import com.example.practice.entity.User;
 import com.example.practice.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/item")
+@RequestMapping("/items")
 public class ItemController {
 
     private final ItemService itemService;
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/by-id/{id}")
     public ResponseEntity<Item> getItemById(@PathVariable("id") Long id) {
         Optional<Item> optItem = itemService.read(id);
-        if (optItem.isPresent()) {
-            return new ResponseEntity<>(optItem.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return optItem.isPresent()
+                ? new ResponseEntity<>(optItem.get(), HttpStatus.OK)
+                : new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
-    public ResponseEntity<Void> createItem(@RequestBody Item item) {
+    public ResponseEntity<Void> createItem(Item item) {
         itemService.create(item);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<Item>> readAll() {
+        final List<Item> items = itemService.readAll();
+
+        return items != null && !items.isEmpty()
+                ? new ResponseEntity<>(items, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
-        itemService.deleteItem(id);
-        return ResponseEntity.ok().build();
+        itemService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@RequestBody Item item) {
+        boolean updated = itemService.update(item);
+
+        return updated
+                ? new ResponseEntity<>(HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 }

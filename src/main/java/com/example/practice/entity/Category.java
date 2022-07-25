@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "item")
+@Table(name = "category")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,7 +26,7 @@ public class Category {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "parentCategoryId")
+    @Column(name = "parent_category_id")
     private Long parentCategoryId;
 
 }

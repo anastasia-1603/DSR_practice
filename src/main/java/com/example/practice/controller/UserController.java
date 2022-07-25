@@ -16,7 +16,7 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/by-id/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
         Optional<User> optUser = userService.read(id);
 
@@ -28,10 +28,10 @@ public class UserController {
     @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody User user) {
         userService.create(user);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping()
+    @GetMapping("/list")
     public ResponseEntity<List<User>> readAll() {
         final List<User> users = userService.readAll();
 
@@ -43,13 +43,13 @@ public class UserController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return ResponseEntity.ok().build();
+        userService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable(name = "id") Long id, @RequestBody User user) {
-        final boolean updated = userService.update(user, id);
+    @PutMapping
+    public ResponseEntity<?> updateUser(@RequestBody User user) {
+        boolean updated = userService.update(user);
 
         return updated
                 ? new ResponseEntity<>(HttpStatus.OK)

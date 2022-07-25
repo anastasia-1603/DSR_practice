@@ -5,6 +5,7 @@ import com.example.practice.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,8 +22,20 @@ public class ItemService {
         itemRepository.save(item);
     }
 
-    public void deleteItem(Long id) {
+    public void delete(Long id) {
         itemRepository.deleteById(id);
+    }
+
+    public List<Item> readAll() {
+        return itemRepository.findAll();
+    }
+
+    public boolean update(Item item) {
+        if (itemRepository.existsById(item.getId())) {
+            itemRepository.save(item);
+            return true;
+        }
+        return false;
     }
 
 }
