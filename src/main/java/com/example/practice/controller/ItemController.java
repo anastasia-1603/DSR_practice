@@ -17,9 +17,10 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    @GetMapping("/by-id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Item> getItemById(@PathVariable("id") Long id) {
         Optional<Item> optItem = itemService.read(id);
+
         return optItem.isPresent()
                 ? new ResponseEntity<>(optItem.get(), HttpStatus.OK)
                 : new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

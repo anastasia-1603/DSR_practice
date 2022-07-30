@@ -29,4 +29,7 @@ public class Category {
     @Column(name = "parent_category_id")
     private Long parentCategoryId;
 
+    @Column(name = "code")
+    private Long code;
+
 }

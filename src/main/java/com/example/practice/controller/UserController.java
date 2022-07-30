@@ -16,44 +16,33 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/by-id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
-        Optional<User> optUser = userService.read(id);
-
-        return optUser.isPresent()
-                ? new ResponseEntity<>(optUser.get(), HttpStatus.OK)
-                : new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(userService.read(id).get());
     }
 
     @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody User user) {
         userService.create(user);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/list")
     public ResponseEntity<List<User>> readAll() {
-        final List<User> users = userService.readAll();
-
-        return users != null &&  !users.isEmpty()
-                ? new ResponseEntity<>(users, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(userService.readAll());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public ResponseEntity<?> updateUser(@RequestBody User user) {
-        boolean updated = userService.update(user);
-
-        return updated
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    public ResponseEntity<Void> updateUser(@RequestBody User user) {
+        userService.update(user);
+        return ResponseEntity.ok().build();
     }
 
 }

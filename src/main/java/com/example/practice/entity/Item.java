@@ -29,4 +29,7 @@ public class Item {
     @Column(name = "categoryId")
     private Long categoryId;
 
+    @Column(name = "code")
+    private Long code;
+
 }

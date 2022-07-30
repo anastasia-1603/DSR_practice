@@ -16,7 +16,7 @@ import java.util.Optional;
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @GetMapping("/by-id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable("id") Long id) {
         Optional<Category> optCategory = categoryService.read(id);
 
