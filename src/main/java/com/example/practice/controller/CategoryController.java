@@ -1,6 +1,6 @@
 package com.example.practice.controller;
 
-import com.example.practice.entity.Category;
+import com.example.practice.dto.CategoryDto;
 import com.example.practice.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,31 +15,31 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(categoryService.read(id).get());
+    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(categoryService.readCategory(id));
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody Category category) {
-        categoryService.create(category);
+    public ResponseEntity<Void> createUser(@RequestBody CategoryDto categoryDto) {
+        categoryService.createCategory(categoryDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Category>> readAll() {
-        return ResponseEntity.ok(categoryService.readAll());
+    public ResponseEntity<List<CategoryDto>> readAll() {
+        return ResponseEntity.ok(categoryService.readAllCategories());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
-        categoryService.delete(id);
+        categoryService.deleteCategory(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateCategory(@RequestBody Category category) {
-        categoryService.update(category);
+    public ResponseEntity<Void> updateCategory(@RequestBody CategoryDto categoryDto) {
+        categoryService.updateCategory(categoryDto);
         return ResponseEntity.ok().build();
     }
 }

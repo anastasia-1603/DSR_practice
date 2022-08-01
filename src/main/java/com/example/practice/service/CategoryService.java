@@ -1,55 +1,51 @@
 package com.example.practice.service;
 
-import com.example.practice.entity.Category;
+import com.example.practice.dto.CategoryDto;
 import com.example.practice.exceptions.CategoryExistsException;
 import com.example.practice.exceptions.CategoryNotFoundException;
-import com.example.practice.exceptions.UserExistsException;
-import com.example.practice.exceptions.UserNotFoundException;
+import com.example.practice.mapper.CategoryMapper;
 import com.example.practice.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
-    public void create(Category category) {
-        if (categoryRepository.existsById(category.getId())) {
-            throw new CategoryExistsException("Category with id = " + category.getId() + "already exists");
+    public void createCategory(CategoryDto categoryDto) {
+        if (categoryRepository.existsById(categoryDto.getId())) {
+            throw new CategoryExistsException("Category with id = " + categoryDto.getId() + "already exists");
         }
-        categoryRepository.save(category);
+        categoryRepository.save(categoryMapper.fromDto(categoryDto));
     }
 
-    public Optional<Category> read(Long id) {
+    public CategoryDto readCategory(Long id) {
         if (!categoryRepository.existsById(id)) {
             throw new CategoryNotFoundException();
         }
-        return categoryRepository.findById((id));
+        return categoryMapper.toDto(categoryRepository.findById((id)).get());
     }
 
-    public void update(Category category) {
-        if (!categoryRepository.existsById(category.getId())) {
+    public void updateCategory(CategoryDto categoryDto) {
+        if (!categoryRepository.existsById(categoryDto.getId())) {
             throw new CategoryNotFoundException();
         }
-        categoryRepository.save(category);
+        categoryRepository.save(categoryMapper.fromDto(categoryDto));
     }
 
-    public void delete(Long id) {
+    public void deleteCategory(Long id) {
         if (!categoryRepository.existsById(id)) {
             throw new CategoryNotFoundException();
         }
         categoryRepository.deleteById(id);
     }
 
-    public List<Category> readAll() {
-        return categoryRepository.findAll();
+    public List<CategoryDto> readAllCategories() {
+        return categoryMapper.toDto(categoryRepository.findAll());
     }
-
-
-
 }

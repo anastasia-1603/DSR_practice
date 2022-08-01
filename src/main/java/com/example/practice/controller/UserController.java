@@ -1,6 +1,6 @@
 package com.example.practice.controller;
 
-import com.example.practice.entity.User;
+import com.example.practice.dto.UserDto;
 import com.example.practice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,31 +15,31 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(userService.read(id).get());
+    public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(userService.readUser(id));
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody User user) {
-        userService.create(user);
+    public ResponseEntity<Void> createUser(@RequestBody UserDto userDto) {
+        userService.createUser(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<User>> readAll() {
-        return ResponseEntity.ok(userService.readAll());
+    public ResponseEntity<List<UserDto>> readAll() {
+        return ResponseEntity.ok(userService.readAllUsers());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.delete(id);
+        userService.deleteUser(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateUser(@RequestBody User user) {
-        userService.update(user);
+    public ResponseEntity<Void> updateUser(@RequestBody UserDto user) {
+        userService.updateUser(user);
         return ResponseEntity.ok().build();
     }
 

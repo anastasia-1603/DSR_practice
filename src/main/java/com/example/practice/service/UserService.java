@@ -1,51 +1,51 @@
 package com.example.practice.service;
 
-import com.example.practice.entity.User;
+import com.example.practice.dto.UserDto;
 import com.example.practice.exceptions.UserExistsException;
 import com.example.practice.exceptions.UserNotFoundException;
+import com.example.practice.mapper.UserMapper;
 import com.example.practice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    public void create(User user) {
-        if (userRepository.existsById(user.getId())) {
-            throw new UserExistsException("User with id = " + user.getId() + "already exists");
+    public void createUser(UserDto userDto) {
+        if (userRepository.existsById(userDto.getId())) {
+            throw new UserExistsException("User with id = " + userDto.getId() + "already exists");
         }
-        userRepository.save(user);
+        userRepository.save(userMapper.fromDto(userDto));
     }
 
-    public Optional<User> read(Long id) {
+    public UserDto readUser(Long id) {
         if (!userRepository.existsById(id)) {
             throw new UserNotFoundException();
         }
-        return userRepository.findById((id));
+        return userMapper.toDto(userRepository.findById((id)).get());
     }
 
-    public void update(User user) {
-        if (!userRepository.existsById(user.getId())) {
+    public void updateUser(UserDto userDto) {
+        if (!userRepository.existsById(userDto.getId())) {
             throw new UserNotFoundException();
         }
-        userRepository.save(user);
+        userRepository.save(userMapper.fromDto(userDto));
     }
 
-    public void delete(Long id) {
+    public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
             throw new UserNotFoundException();
         }
         userRepository.deleteById(id);
     }
 
-    public List<User> readAll() {
-        return userRepository.findAll();
+    public List<UserDto> readAllUsers() {
+        return userMapper.toDto(userRepository.findAll());
     }
 
 }

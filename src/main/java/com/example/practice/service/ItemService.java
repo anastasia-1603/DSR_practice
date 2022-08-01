@@ -1,7 +1,6 @@
 package com.example.practice.service;
 
 import com.example.practice.dto.ItemDto;
-import com.example.practice.entity.Item;
 import com.example.practice.exceptions.ItemExistsException;
 import com.example.practice.exceptions.ItemNotFoundException;
 import com.example.practice.mapper.ItemMapper;
@@ -10,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,35 +17,35 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
 
-    public void create(Item item) {
-        if (itemRepository.existsById(item.getId())) {
-            throw new ItemExistsException("Item with id = " + item.getId() + "already exists");
+    public void createItem(ItemDto itemDto) {
+        if (itemRepository.existsById(itemDto.getId())) {
+            throw new ItemExistsException("Item with id = " + itemDto.getId() + "already exists");
         }
-        itemRepository.save(item);
+        itemRepository.save(itemMapper.fromDto(itemDto));
     }
 
-    public Optional<Item> read(Long id) {
+    public ItemDto readItem(Long id) {
         if (!itemRepository.existsById(id)) {
             throw new ItemNotFoundException();
         }
-        return itemRepository.findById((id));
+        return itemMapper.toDto(itemRepository.findById((id)).get());
     }
 
-    public void update(Item item) {
-        if (!itemRepository.existsById(item.getId())) {
+    public void updateItem(ItemDto itemDto) {
+        if (!itemRepository.existsById(itemDto.getId())) {
             throw new ItemNotFoundException();
         }
-        itemRepository.save(item);
+        itemRepository.save(itemMapper.fromDto(itemDto));
     }
 
-    public void delete(Long id) {
+    public void deleteItem(Long id) {
         if (!itemRepository.existsById(id)) {
             throw new ItemNotFoundException();
         }
         itemRepository.deleteById(id);
     }
 
-    public List<ItemDto> readAll() {
+    public List<ItemDto> readAllItems() {
         return itemMapper.toDto(itemRepository.findAll());
     }
 }
