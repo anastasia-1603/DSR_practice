@@ -26,8 +26,11 @@ public class Item {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "categoryId")
-    private Long categoryId;
+//    @Column(name = "categoryId")
+//    private Long categoryId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Column(name = "code")
     private Long code;

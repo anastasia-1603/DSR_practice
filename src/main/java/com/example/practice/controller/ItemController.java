@@ -1,5 +1,6 @@
 package com.example.practice.controller;
 
+import com.example.practice.dto.ItemDto;
 import com.example.practice.entity.Item;
 import com.example.practice.service.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +34,8 @@ public class ItemController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Item>> readAll() {
-        final List<Item> items = itemService.readAll();
+    public ResponseEntity<List<ItemDto>> readAll() {
+        final List<ItemDto> items = itemService.readAll();
 
         return items != null && !items.isEmpty()
                 ? new ResponseEntity<>(items, HttpStatus.OK)

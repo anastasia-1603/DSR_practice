@@ -1,6 +1,8 @@
 package com.example.practice.service;
 
+import com.example.practice.dto.ItemDto;
 import com.example.practice.entity.Item;
+import com.example.practice.mapper.ItemMapper;
 import com.example.practice.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.util.Optional;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private final ItemMapper itemMapper;
 
     public Optional<Item> read(Long id) {
         return itemRepository.findById((id));
@@ -26,8 +29,10 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    public List<Item> readAll() {
-        return itemRepository.findAll();
+    public List<ItemDto> readAll() {
+        var t = itemRepository.findAll();
+        var mt = itemMapper.toDto(t);
+        return mt;
     }
 
     public boolean update(Item item) {
