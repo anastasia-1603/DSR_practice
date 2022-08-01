@@ -16,13 +16,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public Optional<User> read(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new UserNotFoundException();
-        }
-        return userRepository.findById((id));
-    }
-
     public void create(User user) {
         if (userRepository.existsById(user.getId())) {
             throw new UserExistsException("User with id = " + user.getId() + "already exists");
@@ -30,8 +23,11 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<User> readAll() {
-        return userRepository.findAll();
+    public Optional<User> read(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new UserNotFoundException();
+        }
+        return userRepository.findById((id));
     }
 
     public void update(User user) {
@@ -47,4 +43,9 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
+
+    public List<User> readAll() {
+        return userRepository.findAll();
+    }
+
 }
