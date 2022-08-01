@@ -6,9 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,41 +16,30 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable("id") Long id) {
-        Optional<Category> optCategory = categoryService.read(id);
-
-        return optCategory.isPresent()
-                ? new ResponseEntity<>(optCategory.get(), HttpStatus.OK)
-                : new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(categoryService.read(id).get());
     }
 
     @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody Category category) {
         categoryService.create(category);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/list")
     public ResponseEntity<List<Category>> readAll() {
-        final List<Category> categories = categoryService.readAll();
-
-        return categories != null &&  !categories.isEmpty()
-                ? new ResponseEntity<>(categories, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.ok(categoryService.readAll());
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         categoryService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody Category category) {
-        boolean updated = categoryService.update(category);
-
-        return updated
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    public ResponseEntity<Void> updateCategory(@RequestBody Category category) {
+        categoryService.update(category);
+        return ResponseEntity.ok().build();
     }
 }
