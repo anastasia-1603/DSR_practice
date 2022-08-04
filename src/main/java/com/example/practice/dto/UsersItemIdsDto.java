@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsersItemKeeperDto {
+public class UsersItemIdsDto {
 
     private Long userId;
     private Long itemId;

@@ -17,9 +17,6 @@ public class UserService {
     private final UserMapper userMapper;
 
     public void createUser(UserDto userDto) {
-        if (userRepository.existsById(userDto.getId())) {
-            throw new UserExistsException("User with id = " + userDto.getId() + "already exists");
-        }
         userRepository.save(userMapper.fromDto(userDto));
     }
 

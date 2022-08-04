@@ -9,11 +9,11 @@ import javax.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "user_item")
+@Table(name = "archive_user_item")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsersItem {
+public class ArchivePossession {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +31,7 @@ public class UsersItem {
     @Column(name = "with_date")
     private Instant withDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "UTC")
+    @Column(name = "to_date")
+    private Instant toDate;
 }
