@@ -46,4 +46,14 @@ public class CategoryService {
     public List<CategoryDto> readAllCategories() {
         return categoryMapper.toDto(categoryRepository.findAll());
     }
+
+    public List<Category> getChildCategories(String name) {
+        return categoryRepository.getChildCategories(name);
+    }
+    public List<Long> getChildCategoriesIds(String name) {
+        return getChildCategories(name)
+                .stream()
+                .map(Category::getId)
+                .toList();
+    }
 }

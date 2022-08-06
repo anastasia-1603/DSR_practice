@@ -23,8 +23,9 @@ public class ItemSpecification {
                 predicates.add(criteriaBuilder.like(root.get("name"), "%" + itemCriteria.getName() + "%"));
             }
             if (StringUtils.isNotBlank(itemCriteria.getCategoryName())) {
+
                 Join<Item, Category> categoryJoin = root.join("category");
-                predicates.add(criteriaBuilder.like(categoryJoin.get("name"), "%" + itemCriteria.getCategoryName() + "%"));
+                predicates.add(criteriaBuilder.isTrue(categoryJoin.get("id").in(itemCriteria.getChildCategoriesIds())));
             }
             if (itemCriteria.getUser() != null) {
                 SearchUserDto user = itemCriteria.getUser();
