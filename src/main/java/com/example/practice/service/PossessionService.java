@@ -3,9 +3,9 @@ package com.example.practice.service;
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.PossessionDto;
 import com.example.practice.dto.UserDto;
-import com.example.practice.dto.UsersItemIdsDto;
 import com.example.practice.entity.ArchivePossession;
 import com.example.practice.entity.Possession;
+import com.example.practice.entity.User;
 import com.example.practice.exceptions.UsersItemExistsException;
 import com.example.practice.exceptions.UsersItemNotFoundException;
 import com.example.practice.mapper.ItemMapper;
@@ -27,6 +27,7 @@ public class PossessionService {
     private final PossessionMapper possessionMapper;
     private final ArchivePossessionRepository archivePossessionRepository;
     private final ItemMapper itemMapper;
+    private final ItemService itemService;
 
     public void addPossession(UserDto user, ItemDto item) {
         Possession poss = possessionRepository.findByItemId(item.getId());
@@ -52,8 +53,9 @@ public class PossessionService {
                 .collect(Collectors.toList()));
     }
 
-    public void removeItemFromUser(UsersItemIdsDto ids) {
-        Possession possession = possessionRepository.findByUserIdAndItemId(ids.getUserId(), ids.getItemId());
+    public void deletePossession(Long userId, Long itemId) {
+        itemService.readItem(itemId); //todo убрать костыль
+        Possession possession = possessionRepository.findByUserIdAndItemId(userId, itemId);
         if (possession == null) {
             throw new UsersItemNotFoundException();
         }

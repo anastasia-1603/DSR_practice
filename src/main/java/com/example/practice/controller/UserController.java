@@ -56,4 +56,11 @@ public class UserController {
     public ResponseEntity<List<ItemDto>> getUserItems(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(userService.getUserItems(userId));
     }
+
+    @DeleteMapping("/{userId}/items/{itemId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> deleteUsersItem(@PathVariable("userId") Long userId, @PathVariable("itemId") Long itemId) {
+        userService.deleteUsersItem(userId, itemId);
+        return ResponseEntity.ok().build();
+    }
 }

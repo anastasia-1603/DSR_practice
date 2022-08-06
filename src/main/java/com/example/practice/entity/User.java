@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -28,5 +29,19 @@ public class User {
 
     @Column(name = "email")
     private String email;
+
+//    @OneToMany
+//    @JoinTable(
+//            name = "user_item",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "item_id"))
+//    private List<Possession> items;
+//
+//    @OneToMany
+//    @JoinTable(
+//            name = "archive_user_item",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "item_id"))
+//    private List<ArchivePossession> archive;
 
 }
