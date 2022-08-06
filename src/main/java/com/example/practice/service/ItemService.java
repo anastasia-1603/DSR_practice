@@ -1,14 +1,19 @@
 package com.example.practice.service;
 
 import com.example.practice.dto.ItemDto;
+import com.example.practice.dto.SearchItemDto;
 import com.example.practice.entity.Item;
 import com.example.practice.exceptions.ItemNotFoundException;
 import com.example.practice.mapper.CategoryMapper;
 import com.example.practice.mapper.ItemMapper;
 import com.example.practice.repository.ItemRepository;
+import com.example.practice.specifications.ItemSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Service
@@ -24,7 +29,8 @@ public class ItemService {
     }
 
     public ItemDto readItem(Long id) {
-        return itemMapper.toDto(itemRepository.findById((id)).orElseThrow(ItemNotFoundException::new));
+        Item item = itemRepository.findById((id)).orElseThrow(ItemNotFoundException::new);
+        return itemMapper.toDto(item);
     }
 
     public void updateItem(ItemDto itemDto) {
@@ -46,5 +52,10 @@ public class ItemService {
 
     public List<ItemDto> readAllItems() {
         return itemMapper.toDto(itemRepository.findAll());
+    }
+
+    public List<ItemDto> getAllItemsByCriteria(SearchItemDto searchItemDto){
+        Specification<Item> productSpecification = ItemSpecification.getItemSpecification(searchItemDto);
+        return itemRepository.findAll(productSpecification).stream().map(itemMapper::toDto).toList();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.practice.dto;
 
 
+import com.example.practice.entity.User;
 import com.example.practice.validator.New;
 import com.example.practice.validator.Update;
 import lombok.AllArgsConstructor;
@@ -33,4 +34,6 @@ public class ItemDto {
 
     @NotNull
     private Long code;
+
+    private UserDto user;
 }

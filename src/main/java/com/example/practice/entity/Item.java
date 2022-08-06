@@ -26,13 +26,18 @@ public class Item {
     @Column(name = "image")
     private String image;
 
-//    @Column(name = "categoryId")
-//    private Long categoryId;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
 
     @Column(name = "code")
     private Long code;
+
+    @ManyToOne
+    @JoinTable(
+            name = "user_item",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private User user;
 
 }

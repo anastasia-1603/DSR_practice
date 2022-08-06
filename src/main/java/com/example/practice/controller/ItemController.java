@@ -1,6 +1,8 @@
 package com.example.practice.controller;
 
 import com.example.practice.dto.ItemDto;
+import com.example.practice.dto.SearchItemDto;
+import com.example.practice.entity.Item;
 import com.example.practice.service.ItemService;
 import com.example.practice.validator.New;
 import com.example.practice.validator.Update;
@@ -9,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -46,4 +51,10 @@ public class ItemController {
         itemService.updateItem(itemDto);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/criteria")
+    public ResponseEntity<List<ItemDto>> getAllItemsByCriteria(@RequestBody SearchItemDto searchItemDto){
+        return ResponseEntity.status(HttpStatus.OK).body(itemService.getAllItemsByCriteria(searchItemDto));
+    }
+
 }
