@@ -13,7 +13,7 @@ public interface CategoryMapper {
 
     Category fromDto(CategoryDto categoryDto);
 
-//    @Mapping(target = "category.parentCategory", ignore = true)
+    //    @Mapping(target = "category.parentCategory", ignore = true)
     CategoryDto toDto(Category category);
 
     List<Category> fromDto(List<CategoryDto> categoryDtoList);

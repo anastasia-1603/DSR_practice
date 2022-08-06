@@ -1,59 +1,59 @@
 package com.example.practice.service;
 
+import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.PossessionDto;
+import com.example.practice.dto.UserDto;
 import com.example.practice.dto.UsersItemIdsDto;
 import com.example.practice.entity.ArchivePossession;
-import com.example.practice.entity.Item;
-import com.example.practice.entity.User;
 import com.example.practice.entity.Possession;
-import com.example.practice.exceptions.ItemNotFoundException;
-import com.example.practice.exceptions.UserNotFoundException;
+import com.example.practice.exceptions.UsersItemExistsException;
 import com.example.practice.exceptions.UsersItemNotFoundException;
+import com.example.practice.mapper.ItemMapper;
 import com.example.practice.mapper.PossessionMapper;
 import com.example.practice.repository.ArchivePossessionRepository;
-import com.example.practice.repository.ItemRepository;
 import com.example.practice.repository.PossessionRepository;
-import com.example.practice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PossessionService {
 
-    private final ItemRepository itemRepository;
-    private final UserRepository userRepository;
     private final PossessionRepository possessionRepository;
     private final PossessionMapper possessionMapper;
     private final ArchivePossessionRepository archivePossessionRepository;
+    private final ItemMapper itemMapper;
 
-    public void addItemToUser(UsersItemIdsDto usersItemIdsDto) {
-        Optional<User> user = userRepository.findById(usersItemIdsDto.getUserId());
-        Optional<Item> item = itemRepository.findById(usersItemIdsDto.getItemId());
-        if (user.isEmpty()) {
-            throw new UserNotFoundException();
+    public void addPossession(UserDto user, ItemDto item) {
+        Possession poss = possessionRepository.findByItemId(item.getId());
+        if (poss != null) {
+            throw new UsersItemExistsException(poss);
+        } else {
+            PossessionDto possession = new PossessionDto();
+            possession.setUser(user);
+            possession.setItem(item);
+            possession.setWithDate(Instant.now());
+            possessionRepository.save(possessionMapper.fromDto(possession));
         }
-        if (item.isEmpty()) {
-            throw new ItemNotFoundException();
-        }
-        Possession possession = new Possession();
-        possession.setUser(user.get());
-        possession.setItem(item.get());
-        possession.setWithDate(Instant.now());
-        possessionRepository.save(possession);
-
     }
 
     public List<PossessionDto> readAll() {
         return possessionMapper.toDto(possessionRepository.findAll());
     }
 
-    public void removeItemFromUser(UsersItemIdsDto uikd) {
-        Possession possession = possessionRepository.findByUserIdAndItemId(uikd.getUserId(), uikd.getItemId());
+    public List<ItemDto> getUserItems(Long userId) {
+        return itemMapper.toDto(possessionRepository.findByUserId(userId)
+                .stream()
+                .map(Possession::getItem)
+                .collect(Collectors.toList()));
+    }
+
+    public void removeItemFromUser(UsersItemIdsDto ids) {
+        Possession possession = possessionRepository.findByUserIdAndItemId(ids.getUserId(), ids.getItemId());
         if (possession == null) {
             throw new UsersItemNotFoundException();
         }

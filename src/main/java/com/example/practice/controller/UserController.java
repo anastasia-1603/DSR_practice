@@ -1,10 +1,13 @@
 package com.example.practice.controller;
 
+import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.UserDto;
 import com.example.practice.service.UserService;
+import com.example.practice.validator.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<Void> createUser(@Validated(New.class) @RequestBody UserDto userDto) {
         userService.createUser(userDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -37,12 +40,20 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping
-    public ResponseEntity<Void> updateUser(@RequestBody UserDto user) {
+    @PutMapping()
+    public ResponseEntity<Void> updateUser(@Validated(Update.class) @RequestBody UserDto user) {
         userService.updateUser(user);
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/{userId}/items/{itemId}")
+    public ResponseEntity<Void> addItemToUser(@PathVariable("userId") Long userId, @PathVariable("itemId") Long itemId) {
+        userService.addItemToUser(userId, itemId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
-
+    @GetMapping("/{userId}/items")
+    public ResponseEntity<List<ItemDto>> getUserItems(@PathVariable("userId") Long userId) {
+        return ResponseEntity.ok(userService.getUserItems(userId));
+    }
 }

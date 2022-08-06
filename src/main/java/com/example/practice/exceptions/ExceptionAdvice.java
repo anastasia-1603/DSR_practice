@@ -37,4 +37,14 @@ public class ExceptionAdvice {
     public ResponseEntity<String> handleCategoryExists(CategoryExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
+    @ExceptionHandler(value = UsersItemExistsException.class)
+    public ResponseEntity<String> handleUsersItemExists(UsersItemExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = UsersItemNotFoundException.class)
+    public ResponseEntity<String> handleUsersItemNotFound(UsersItemNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }

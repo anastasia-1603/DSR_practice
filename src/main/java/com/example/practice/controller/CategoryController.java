@@ -2,9 +2,12 @@ package com.example.practice.controller;
 
 import com.example.practice.dto.CategoryDto;
 import com.example.practice.service.CategoryService;
+import com.example.practice.validator.New;
+import com.example.practice.validator.Update;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody CategoryDto categoryDto) {
+    public ResponseEntity<Void> createCategory(@Validated(New.class) @RequestBody CategoryDto categoryDto) {
         categoryService.createCategory(categoryDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -38,7 +41,7 @@ public class CategoryController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateCategory(@RequestBody CategoryDto categoryDto) {
+    public ResponseEntity<Void> updateCategory(@Validated(Update.class) @RequestBody CategoryDto categoryDto) {
         categoryService.updateCategory(categoryDto);
         return ResponseEntity.ok().build();
     }

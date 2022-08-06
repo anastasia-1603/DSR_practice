@@ -1,8 +1,9 @@
 package com.example.practice.service;
 
 import com.example.practice.dto.ItemDto;
-import com.example.practice.exceptions.ItemExistsException;
+import com.example.practice.entity.Item;
 import com.example.practice.exceptions.ItemNotFoundException;
+import com.example.practice.mapper.CategoryMapper;
 import com.example.practice.mapper.ItemMapper;
 import com.example.practice.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,26 +17,24 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
+    private final CategoryMapper categoryMapper;
 
     public void createItem(ItemDto itemDto) {
-        if (itemRepository.existsById(itemDto.getId())) {
-            throw new ItemExistsException("Item with id = " + itemDto.getId() + "already exists");
-        }
         itemRepository.save(itemMapper.fromDto(itemDto));
     }
 
     public ItemDto readItem(Long id) {
-        if (!itemRepository.existsById(id)) {
-            throw new ItemNotFoundException();
-        }
-        return itemMapper.toDto(itemRepository.findById((id)).get());
+        return itemMapper.toDto(itemRepository.findById((id)).orElseThrow(ItemNotFoundException::new));
     }
 
     public void updateItem(ItemDto itemDto) {
-        if (!itemRepository.existsById(itemDto.getId())) {
-            throw new ItemNotFoundException();
-        }
-        itemRepository.save(itemMapper.fromDto(itemDto));
+        Item item = itemRepository.findById(itemDto.getId()).orElseThrow(ItemNotFoundException::new);
+        item.setName(itemDto.getName());
+        item.setCategory(categoryMapper.fromDto(itemDto.getCategory()));
+        item.setCode(itemDto.getCode());
+        item.setDescription(itemDto.getDescription());
+        item.setImage(itemDto.getImage());
+        itemRepository.save(item);
     }
 
     public void deleteItem(Long id) {
