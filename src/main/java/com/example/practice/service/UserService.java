@@ -10,6 +10,8 @@ import com.example.practice.exceptions.UsersItemNotFoundException;
 import com.example.practice.mapper.UserMapper;
 import com.example.practice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -48,8 +50,9 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public List<UserDto> readAllUsers() {
-        return userMapper.toDto(userRepository.findAll());
+    public List<UserDto> readAllUsers(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userMapper.toDto(userRepository.findAll(pageable).stream().toList());
     }
 
     public void addItemToUser(Long userId, Long itemId) {
@@ -69,7 +72,6 @@ public class UserService {
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException();
         }
-
         possessionService.deletePossession(userId, itemId);
     }
 

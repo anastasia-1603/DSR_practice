@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,8 +19,9 @@ public class ArchivePossessionController {
     private final ArchivePossessionService archivePossessionService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<ArchivePossessionDto>> getAll() {
-        return ResponseEntity.ok(archivePossessionService.readAll());
+    public ResponseEntity<List<ArchivePossessionDto>> getAll(@RequestParam(defaultValue = "0", name = "page") int page,
+                                                             @RequestParam(defaultValue = "20", name = "size") int size) {
+        return ResponseEntity.ok(archivePossessionService.readAll(page, size));
     }
 
 }

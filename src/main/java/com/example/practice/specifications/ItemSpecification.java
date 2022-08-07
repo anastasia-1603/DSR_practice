@@ -1,22 +1,22 @@
 package com.example.practice.specifications;
 
 
+import com.example.practice.dto.PageableSearchItemDto;
 import com.example.practice.dto.SearchUserDto;
 import com.example.practice.entity.Category;
+import com.example.practice.entity.Item;
 import com.example.practice.entity.User;
 import org.apache.commons.lang3.StringUtils;
-import com.example.practice.dto.SearchItemDto;
-import com.example.practice.entity.Item;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.criteria.Predicate;
 
 public class ItemSpecification {
 
-    public static Specification<Item> getItemSpecification(SearchItemDto itemCriteria) {
+    public static Specification<Item> getItemSpecification(PageableSearchItemDto itemCriteria) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (StringUtils.isNotBlank(itemCriteria.getName())) {

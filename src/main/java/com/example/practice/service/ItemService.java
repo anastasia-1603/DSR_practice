@@ -1,8 +1,8 @@
 package com.example.practice.service;
 
 import com.example.practice.dto.ItemDto;
+import com.example.practice.dto.PageableSearchItemDto;
 import com.example.practice.dto.SearchItemDto;
-import com.example.practice.entity.Category;
 import com.example.practice.entity.Item;
 import com.example.practice.exceptions.ItemNotFoundException;
 import com.example.practice.mapper.CategoryMapper;
@@ -11,13 +11,12 @@ import com.example.practice.repository.ItemRepository;
 import com.example.practice.specifications.ItemSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import org.springframework.data.domain.Pageable;
-
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +39,7 @@ public class ItemService {
     public void updateItem(ItemDto itemDto) {
         Item item = itemRepository.findById(itemDto.getId()).orElseThrow(ItemNotFoundException::new);
         item.setName(itemDto.getName());
-        item.setCategory(categoryMapper.fromDto(itemDto.getCategory())); //todo
+        item.setCategory(categoryService.readCategory(itemDto.getCategory().getId()));
         item.setCode(itemDto.getCode());
         item.setDescription(itemDto.getDescription());
         item.setImage(itemDto.getImage());
@@ -54,17 +53,30 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    public List<ItemDto> readAllItems() {
-        return itemMapper.toDto(itemRepository.findAll());
+    public List<ItemDto> readAllItems(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return itemMapper.toDto(itemRepository.findAll(pageable).stream().toList());
     }
 
-    public List<ItemDto> getAllItemsByCriteria(SearchItemDto searchItemDto) {
-        List<Long> ids = categoryService.getChildCategoriesIds(searchItemDto.getCategoryName());
-        searchItemDto.setChildCategoriesIds(ids);
-        Specification<Item> productSpecification = ItemSpecification.getItemSpecification(searchItemDto);
+//    public List<ItemDto> filterItems(SearchItemDto itemDto) {
+//        List<Long> ids = categoryService.getChildCategoriesIds(itemDto.getCategoryName());
+//        itemDto.setChildCategoriesIds(ids);
+//        Specification<Item> productSpecification = ItemSpecification.getItemSpecification(itemDto);
+//        return itemRepository.findAll(productSpecification).stream().map(itemMapper::toDto).toList();
+//    }
 
-        return itemRepository.findAll(productSpecification).stream().map(itemMapper::toDto).toList();
+    public List<ItemDto> filterItemsPage(PageableSearchItemDto itemDto) {
+        if (itemDto.getPage() < 0 || itemDto.getSize() < 0) {
+            return Collections.emptyList();
+        }
+        Pageable pageable = PageRequest.of(itemDto.getPage(), itemDto.getSize());
+
+        List<Long> ids = categoryService.getChildCategoriesIds(itemDto.getCategoryName());
+        itemDto.setChildCategoriesIds(ids);
+
+        Specification<Item> productSpecification = ItemSpecification.getItemSpecification(itemDto);
+        return itemRepository.findAll(productSpecification, pageable).stream().map(itemMapper::toDto).toList();
     }
-
 
 }

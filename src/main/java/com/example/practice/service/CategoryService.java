@@ -6,6 +6,8 @@ import com.example.practice.exceptions.CategoryNotFoundException;
 import com.example.practice.mapper.CategoryMapper;
 import com.example.practice.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +24,12 @@ public class CategoryService {
         categoryRepository.save(categoryMapper.fromDto(categoryDto));
     }
 
-    public CategoryDto readCategory(Long id) {
-        return categoryMapper.toDto(categoryRepository.findById((id)).orElseThrow(CategoryNotFoundException::new));
+    public CategoryDto readCategoryDto(Long id) {
+        return categoryMapper.toDto(readCategory(id));
+    }
+
+    public Category readCategory(Long id) {
+        return categoryRepository.findById((id)).orElseThrow(CategoryNotFoundException::new);
     }
 
     public void updateCategory(CategoryDto categoryDto) {
@@ -43,8 +49,9 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
-    public List<CategoryDto> readAllCategories() {
-        return categoryMapper.toDto(categoryRepository.findAll());
+    public List<CategoryDto> readAllCategories(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return categoryMapper.toDto(categoryRepository.findAll(pageable).stream().toList());
     }
 
     public List<Category> getChildCategories(String name) {

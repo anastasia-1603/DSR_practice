@@ -29,12 +29,12 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<UserDto>> readAll() {
-        return ResponseEntity.ok(userService.readAllUsers());
+    public ResponseEntity<List<UserDto>> readAll(@RequestParam(defaultValue = "0", name = "page") int page,
+                                                 @RequestParam(defaultValue = "20", name = "size") int size) {
+        return ResponseEntity.ok(userService.readAllUsers(page, size));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
@@ -58,7 +58,6 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}/items/{itemId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> deleteUsersItem(@PathVariable("userId") Long userId, @PathVariable("itemId") Long itemId) {
         userService.deleteUsersItem(userId, itemId);
         return ResponseEntity.ok().build();
