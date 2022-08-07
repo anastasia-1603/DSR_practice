@@ -29,8 +29,8 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<UserDto>> readAll(@RequestParam(defaultValue = "0", name = "page") int page,
-                                                 @RequestParam(defaultValue = "20", name = "size") int size) {
+    public ResponseEntity<List<UserDto>> getAllUsers(@RequestParam(defaultValue = "0", name = "page") int page,
+                                                     @RequestParam(defaultValue = "20", name = "size") int size) {
         return ResponseEntity.ok(userService.readAllUsers(page, size));
     }
 
@@ -62,4 +62,6 @@ public class UserController {
         userService.deleteUsersItem(userId, itemId);
         return ResponseEntity.ok().build();
     }
+
+
 }

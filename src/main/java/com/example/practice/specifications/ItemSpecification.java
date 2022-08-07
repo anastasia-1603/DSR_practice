@@ -1,8 +1,9 @@
 package com.example.practice.specifications;
 
-
-import com.example.practice.dto.PageableSearchItemDto;
+import com.example.practice.dto.PageFilterSortItemDto;
 import com.example.practice.dto.SearchUserDto;
+import com.example.practice.dto.SortItemDto;
+import com.example.practice.dto.SortType;
 import com.example.practice.entity.Category;
 import com.example.practice.entity.Item;
 import com.example.practice.entity.User;
@@ -10,13 +11,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemSpecification {
 
-    public static Specification<Item> getItemSpecification(PageableSearchItemDto itemCriteria) {
+    public static Specification<Item> getItemSpecification(PageFilterSortItemDto itemCriteria) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (StringUtils.isNotBlank(itemCriteria.getName())) {
@@ -43,7 +46,29 @@ public class ItemSpecification {
                     predicates.add(criteriaBuilder.equal(userJoin.get("email"), user.getEmail()));
                 }
             }
-            return query.where(predicates.toArray(new Predicate[0])).getRestriction();
+
+            List<Order> orders = new ArrayList<>();
+            SortItemDto sort = itemCriteria.getSort();
+            if (sort != null) {
+                if (sort.getTypeSortByName() != null) {
+                    if (sort.getTypeSortByName() == SortType.ASC) {
+                        orders.add(criteriaBuilder.asc(root.get(("name"))));
+                    }
+                    else {
+                        orders.add(criteriaBuilder.desc(root.get("name")));
+                    }
+                }
+                if (sort.getTypeSortByUser() != null) {
+                    Join<Item, User> userJoin = root.join("user", JoinType.LEFT);
+                    if (sort.getTypeSortByUser() == SortType.ASC) {
+                        orders.add(criteriaBuilder.asc(userJoin.get(("surname"))));
+                    }
+                    else {
+                        orders.add(criteriaBuilder.desc(userJoin.get(("surname"))));
+                    }
+                }
+            }
+            return query.where(predicates.toArray(new Predicate[0])).orderBy(orders).getRestriction();
         };
     }
 

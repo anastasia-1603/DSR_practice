@@ -1,7 +1,7 @@
 package com.example.practice.controller;
 
 import com.example.practice.dto.ItemDto;
-import com.example.practice.dto.PageableSearchItemDto;
+import com.example.practice.dto.PageFilterSortItemDto;
 import com.example.practice.service.ItemService;
 import com.example.practice.validator.New;
 import com.example.practice.validator.Update;
@@ -32,8 +32,8 @@ public class ItemController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<ItemDto>> readAllItems(@RequestParam(defaultValue = "0", name = "page") int page,
-                                                      @RequestParam(defaultValue = "20", name = "size") int size) {
+    public ResponseEntity<List<ItemDto>> getAllItems(@RequestParam(defaultValue = "0", name = "page") int page,
+                                                     @RequestParam(defaultValue = "20", name = "size") int size) {
         return ResponseEntity.ok(itemService.readAllItems(page, size));
     }
 
@@ -49,14 +49,14 @@ public class ItemController {
         return ResponseEntity.ok().build();
     }
 
-//    @GetMapping("/filter")
-//    public ResponseEntity<List<ItemDto>> filterItems(@RequestBody SearchItemDto itemDto){
-//        return ResponseEntity.status(HttpStatus.OK).body(itemService.filterItems(itemDto));
-//    }
-
-    @GetMapping("/filter/page")
-    public ResponseEntity<List<ItemDto>> filterItemsPage(@RequestBody PageableSearchItemDto itemDto){
+    @GetMapping("/list/filter")
+    public ResponseEntity<List<ItemDto>> filterItems(@RequestBody PageFilterSortItemDto itemDto){
         return ResponseEntity.status(HttpStatus.OK).body(itemService.filterItemsPage(itemDto));
+    }
+
+    @GetMapping("/list/filter/sort")
+    public ResponseEntity<List<ItemDto>> getItems(@RequestBody PageFilterSortItemDto itemDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(itemService.filterSortItemsPage(itemDto));
     }
 
 }

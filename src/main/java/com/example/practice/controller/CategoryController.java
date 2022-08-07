@@ -19,7 +19,7 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDto> getCategoryById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(categoryService.readCategoryDto(id));
+        return ResponseEntity.ok(categoryService.getCategoryDtoById(id));
     }
 
     @PostMapping
@@ -29,8 +29,8 @@ public class CategoryController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<CategoryDto>> readAll(@RequestParam(defaultValue = "0", name = "page") int page,
-                                                     @RequestParam(defaultValue = "20", name = "size") int size) {
+    public ResponseEntity<List<CategoryDto>> getAllCategories(@RequestParam(defaultValue = "0", name = "page") int page,
+                                                              @RequestParam(defaultValue = "20", name = "size") int size) {
         return ResponseEntity.ok(categoryService.readAllCategories(page, size));
     }
 

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -21,21 +20,22 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
 
     public void createCategory(CategoryDto categoryDto) {
-        categoryRepository.save(categoryMapper.fromDto(categoryDto));
+        Category c = categoryMapper.fromDto(categoryDto);
+        categoryRepository.save(c);
     }
 
-    public CategoryDto readCategoryDto(Long id) {
-        return categoryMapper.toDto(readCategory(id));
+    public CategoryDto getCategoryDtoById(Long id) {
+        return categoryMapper.toDto(getCategoryById(id));
     }
 
-    public Category readCategory(Long id) {
+    public Category getCategoryById(Long id) {
         return categoryRepository.findById((id)).orElseThrow(CategoryNotFoundException::new);
     }
 
     public void updateCategory(CategoryDto categoryDto) {
         Category category = categoryRepository.findById(categoryDto.getId()).orElseThrow(CategoryNotFoundException::new);
         category.setName(categoryDto.getName());
-        category.setParentCategory(categoryMapper.fromDto(categoryDto.getParentCategory()));
+        category.setParentCategoryId(categoryDto.getParentCategoryId());
         category.setCode(categoryDto.getCode());
         category.setDescription(categoryDto.getDescription());
         category.setImage(categoryDto.getImage());

@@ -27,7 +27,7 @@ public class CategoryDto {
     @NotNull
     private String image;
 
-    private CategoryDto parentCategory;
+    private Long parentCategoryId;
 
     @NotNull
     private Long code;

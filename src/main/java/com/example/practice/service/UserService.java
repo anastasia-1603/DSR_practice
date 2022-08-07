@@ -2,11 +2,8 @@ package com.example.practice.service;
 
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.UserDto;
-import com.example.practice.entity.ArchivePossession;
-import com.example.practice.entity.Possession;
 import com.example.practice.entity.User;
 import com.example.practice.exceptions.UserNotFoundException;
-import com.example.practice.exceptions.UsersItemNotFoundException;
 import com.example.practice.mapper.UserMapper;
 import com.example.practice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 
 @Service

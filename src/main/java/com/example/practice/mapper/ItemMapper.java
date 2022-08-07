@@ -12,7 +12,6 @@ public interface ItemMapper {
 
     Item fromDto(ItemDto itemDto);
 
-    @Mapping(target = "category.parentCategory", ignore = true)
     ItemDto toDto(Item item);
 
     List<Item> fromDto(List<ItemDto> itemDtoList);
