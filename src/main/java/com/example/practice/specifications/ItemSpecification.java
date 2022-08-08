@@ -10,10 +10,7 @@ import com.example.practice.entity.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,30 +43,32 @@ public class ItemSpecification {
                     predicates.add(criteriaBuilder.equal(userJoin.get("email"), user.getEmail()));
                 }
             }
-
-            List<Order> orders = new ArrayList<>();
-            SortItemDto sort = itemCriteria.getSort();
-            if (sort != null) {
-                if (sort.getTypeSortByName() != null) {
-                    if (sort.getTypeSortByName() == SortType.ASC) {
-                        orders.add(criteriaBuilder.asc(root.get(("name"))));
-                    }
-                    else {
-                        orders.add(criteriaBuilder.desc(root.get("name")));
-                    }
-                }
-                if (sort.getTypeSortByUser() != null) {
-                    Join<Item, User> userJoin = root.join("user", JoinType.LEFT);
-                    if (sort.getTypeSortByUser() == SortType.ASC) {
-                        orders.add(criteriaBuilder.asc(userJoin.get(("surname"))));
-                    }
-                    else {
-                        orders.add(criteriaBuilder.desc(userJoin.get(("surname"))));
-                    }
-                }
-            }
+            List<Order> orders = getSortOrders(itemCriteria.getSort(), criteriaBuilder, root);
             return query.where(predicates.toArray(new Predicate[0])).orderBy(orders).getRestriction();
         };
     }
 
+    private static List<Order> getSortOrders(SortItemDto sort, CriteriaBuilder cb, Root<Item> root) {
+        List<Order> orders = new ArrayList<>();
+        if (sort != null) {
+            if (sort.getTypeSortByName() != null) {
+                if (sort.getTypeSortByName() == SortType.ASC) {
+                    orders.add(cb.asc(root.get(("name"))));
+                }
+                else {
+                    orders.add(cb.desc(root.get("name")));
+                }
+            }
+            if (sort.getTypeSortByUser() != null) {
+                Join<Item, User> userJoin = root.join("user", JoinType.LEFT);
+                if (sort.getTypeSortByUser() == SortType.ASC) {
+                    orders.add(cb.asc(userJoin.get(("surname"))));
+                }
+                else {
+                    orders.add(cb.desc(userJoin.get(("surname"))));
+                }
+            }
+        }
+        return orders;
+    }
 }
