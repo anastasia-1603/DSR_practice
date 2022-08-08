@@ -3,7 +3,6 @@ package com.example.practice.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Null;
@@ -22,12 +21,10 @@ public class PageFilterSortItemDto {
     private List<Long> childCategoriesIds;
 
     @Min(0)
-    @Value("0")
-    private int page;
+    private int page = 0;
 
     @Min(1)
-    @Value("20")
-    private int size;
+    private int size = 20;
 
     private SortItemDto sort;
 }

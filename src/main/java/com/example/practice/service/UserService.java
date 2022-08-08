@@ -2,7 +2,10 @@ package com.example.practice.service;
 
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.UserDto;
+import com.example.practice.entity.Item;
 import com.example.practice.entity.User;
+import com.example.practice.exceptions.ItemNotFoundException;
+import com.example.practice.exceptions.UserEmailExistsException;
 import com.example.practice.exceptions.UserNotFoundException;
 import com.example.practice.mapper.UserMapper;
 import com.example.practice.repository.UserRepository;
@@ -23,10 +26,13 @@ public class UserService {
     private final PossessionService possessionService;
 
     public void createUser(UserDto userDto) {
+        if (userRepository.existsByEmail(userDto.getEmail())) {
+            throw new UserEmailExistsException();
+        }
         userRepository.save(userMapper.fromDto(userDto));
     }
 
-    public UserDto readUser(Long id) {
+    public UserDto getUserById(Long id) {
         return userMapper.toDto(userRepository.findById(id).orElseThrow(UserNotFoundException::new));
     }
 
@@ -52,8 +58,9 @@ public class UserService {
     }
 
     public void addItemToUser(Long userId, Long itemId) {
-        UserDto user = readUser(userId);
-        ItemDto item = itemService.readItem(itemId);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Item item = itemService.getItemById(itemId);
+
         possessionService.addPossession(user, item);
     }
 
@@ -67,6 +74,9 @@ public class UserService {
     public void deleteUsersItem(Long userId, Long itemId) {
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException();
+        }
+        if (!itemService.existsById(userId)) {
+            throw new ItemNotFoundException();
         }
         possessionService.deletePossession(userId, itemId);
     }

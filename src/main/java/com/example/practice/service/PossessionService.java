@@ -2,8 +2,8 @@ package com.example.practice.service;
 
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.PossessionDto;
-import com.example.practice.dto.UserDto;
 import com.example.practice.entity.ArchivePossession;
+import com.example.practice.entity.Item;
 import com.example.practice.entity.Possession;
 import com.example.practice.entity.User;
 import com.example.practice.exceptions.UsersItemExistsException;
@@ -27,18 +27,18 @@ public class PossessionService {
     private final PossessionMapper possessionMapper;
     private final ArchivePossessionRepository archivePossessionRepository;
     private final ItemMapper itemMapper;
-    private final ItemService itemService;
 
-    public void addPossession(UserDto user, ItemDto item) {
+
+    public void addPossession(User user, Item item) {
         Possession poss = possessionRepository.findByItemId(item.getId());
         if (poss != null) {
             throw new UsersItemExistsException(poss);
         } else {
-            PossessionDto possession = new PossessionDto();
+            Possession possession = new Possession();
             possession.setUser(user);
             possession.setItem(item);
             possession.setWithDate(Instant.now());
-            possessionRepository.save(possessionMapper.fromDto(possession));
+            possessionRepository.save(possession);
         }
     }
 
@@ -54,7 +54,6 @@ public class PossessionService {
     }
 
     public void deletePossession(Long userId, Long itemId) {
-        itemService.readItem(itemId); //todo убрать костыль
         Possession possession = possessionRepository.findByUserIdAndItemId(userId, itemId);
         if (possession == null) {
             throw new UsersItemNotFoundException();

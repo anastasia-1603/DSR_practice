@@ -4,7 +4,6 @@ import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.PageFilterSortItemDto;
 import com.example.practice.entity.Item;
 import com.example.practice.exceptions.ItemNotFoundException;
-import com.example.practice.mapper.CategoryMapper;
 import com.example.practice.mapper.ItemMapper;
 import com.example.practice.repository.ItemRepository;
 import com.example.practice.specifications.ItemSpecification;
@@ -23,16 +22,23 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
-    private final CategoryMapper categoryMapper;
     private final CategoryService categoryService;
 
     public void createItem(ItemDto itemDto) {
         itemRepository.save(itemMapper.fromDto(itemDto));
     }
 
-    public ItemDto readItem(Long id) {
+    public ItemDto getItemDtoById(Long id) {
         Item item = itemRepository.findById((id)).orElseThrow(ItemNotFoundException::new);
         return itemMapper.toDto(item);
+    }
+
+    public Item getItemById(Long id) {
+        return itemRepository.findById((id)).orElseThrow(ItemNotFoundException::new);
+    }
+
+    public boolean existsById(Long id) {
+        return itemRepository.existsById(id);
     }
 
     public void updateItem(ItemDto itemDto) {
@@ -56,27 +62,6 @@ public class ItemService {
         Pageable pageable = PageRequest.of(page, size);
 
         return itemMapper.toDto(itemRepository.findAll(pageable).stream().toList());
-    }
-
-
-//    public List<ItemDto> filterItems(SearchItemDto itemDto) {
-//        List<Long> ids = categoryService.getChildCategoriesIds(itemDto.getCategoryName());
-//        itemDto.setChildCategoriesIds(ids);
-//        Specification<Item> productSpecification = ItemSpecification.getItemSpecification(itemDto);
-//        return itemRepository.findAll(productSpecification).stream().map(itemMapper::toDto).toList();
-//    }
-
-    public List<ItemDto> filterItemsPage(PageFilterSortItemDto itemDto) {
-        if (itemDto.getPage() < 0 || itemDto.getSize() < 0) {
-            return Collections.emptyList();
-        }
-        Pageable pageable = PageRequest.of(itemDto.getPage(), itemDto.getSize());
-
-        List<Long> ids = categoryService.getChildCategoriesIds(itemDto.getCategoryName());
-        itemDto.setChildCategoriesIds(ids);
-
-        Specification<Item> productSpecification = ItemSpecification.getItemSpecification(itemDto);
-        return itemRepository.findAll(productSpecification, pageable).stream().map(itemMapper::toDto).toList();
     }
 
     public List<ItemDto> filterSortItemsPage(PageFilterSortItemDto itemDto) {

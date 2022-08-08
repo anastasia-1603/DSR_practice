@@ -22,7 +22,7 @@ public class ItemController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ItemDto> getItemById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(itemService.readItem(id));
+        return ResponseEntity.ok(itemService.getItemDtoById(id));
     }
 
     @PostMapping
@@ -50,12 +50,7 @@ public class ItemController {
     }
 
     @GetMapping("/list/filter")
-    public ResponseEntity<List<ItemDto>> filterItems(@RequestBody PageFilterSortItemDto itemDto){
-        return ResponseEntity.status(HttpStatus.OK).body(itemService.filterItemsPage(itemDto));
-    }
-
-    @GetMapping("/list/filter/sort")
-    public ResponseEntity<List<ItemDto>> getItems(@RequestBody PageFilterSortItemDto itemDto) {
+    public ResponseEntity<List<ItemDto>> getAllItemsFiltered(@RequestBody PageFilterSortItemDto itemDto) {
         return ResponseEntity.status(HttpStatus.OK).body(itemService.filterSortItemsPage(itemDto));
     }
 

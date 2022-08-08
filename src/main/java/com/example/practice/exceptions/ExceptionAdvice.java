@@ -13,8 +13,8 @@ public class ExceptionAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler(value = UserExistsException.class)
-    public ResponseEntity<String> handleUserExists(UserExistsException ex) {
+    @ExceptionHandler(value = UserEmailExistsException.class)
+    public ResponseEntity<String> handleUserExists(UserEmailExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
