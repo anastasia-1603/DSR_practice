@@ -3,10 +3,12 @@ package com.example.practice.service;
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.UserDto;
 import com.example.practice.entity.Item;
+import com.example.practice.entity.Possession;
 import com.example.practice.entity.User;
 import com.example.practice.exceptions.ItemNotFoundException;
 import com.example.practice.exceptions.UserEmailExistsException;
 import com.example.practice.exceptions.UserNotFoundException;
+import com.example.practice.mapper.ItemMapper;
 import com.example.practice.mapper.UserMapper;
 import com.example.practice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final ItemService itemService;
     private final PossessionService possessionService;
+    private final ItemMapper itemMapper;
 
     public void createUser(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) {

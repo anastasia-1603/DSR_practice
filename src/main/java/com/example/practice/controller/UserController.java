@@ -28,7 +28,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers(@RequestParam(defaultValue = "0", name = "page") int page,
                                                      @RequestParam(defaultValue = "20", name = "size") int size) {
         return ResponseEntity.ok(userService.readAllUsers(page, size));
