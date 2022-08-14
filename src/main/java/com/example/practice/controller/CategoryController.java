@@ -28,10 +28,10 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<List<CategoryDto>> getAllCategories(@RequestParam(defaultValue = "0", name = "page") int page,
                                                               @RequestParam(defaultValue = "20", name = "size") int size) {
-        return ResponseEntity.ok(categoryService.readAllCategories(page, size));
+        return ResponseEntity.ok(categoryService.getAllCategories(page, size));
     }
 
     @DeleteMapping("/{id}")

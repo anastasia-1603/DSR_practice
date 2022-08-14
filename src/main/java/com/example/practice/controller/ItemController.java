@@ -31,7 +31,7 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<List<ItemDto>> getAllItems(@RequestParam(defaultValue = "0", name = "page") int page,
                                                      @RequestParam(defaultValue = "20", name = "size") int size) {
         return ResponseEntity.ok(itemService.readAllItems(page, size));
@@ -49,7 +49,7 @@ public class ItemController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/list/filter")
+    @GetMapping("filter")
     public ResponseEntity<List<ItemDto>> getAllItemsFiltered(@RequestBody PageFilterSortItemDto itemDto) {
         return ResponseEntity.status(HttpStatus.OK).body(itemService.filterSortItemsPage(itemDto));
     }

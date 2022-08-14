@@ -40,7 +40,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping()
+    @PutMapping
     public ResponseEntity<Void> updateUser(@Validated(Update.class) @RequestBody UserDto user) {
         userService.updateUser(user);
         return ResponseEntity.ok().build();
@@ -62,6 +62,4 @@ public class UserController {
         userService.deleteUsersItem(userId, itemId);
         return ResponseEntity.ok().build();
     }
-
-
 }

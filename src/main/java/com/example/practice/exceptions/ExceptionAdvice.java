@@ -14,7 +14,7 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler(value = UserEmailExistsException.class)
-    public ResponseEntity<String> handleUserExists(UserEmailExistsException ex) {
+    public ResponseEntity<String> handleUserEmailExists(UserEmailExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 

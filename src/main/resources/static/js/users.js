@@ -21,7 +21,7 @@ Vue.component('user-form', {
         }
     },
     watch: {
-        userAttr: function (newValue, oldValue) {
+        userAttr: function (newValue) {
             this.id = newValue.id;
             this.surname = newValue.surname;
             this.name = newValue.name;
@@ -46,7 +46,7 @@ Vue.component('user-form', {
                 email: this.email
             };
             if (this.id) {
-                userApi.update({id: this.id}, user)
+                userApi.update(user)
                     .then(result =>
                         result.json().then(data => {
                             var index = getIndex(this.users, data.id);
@@ -68,20 +68,23 @@ Vue.component('user-form', {
                     })
                 )
             }
+        },
+        linkGen(pageNum) {
+            return pageNum === 1 ? '?' : `?page=${pageNum}`
         }
     }
 })
 
 Vue.component('users-row', {
     props: ['user', 'editUser', 'users'],
-    template: '<div>' +
-        '<p>{{user.surname}} {{user.name}} {{user.patronymic}}</p> {{user.email}}' +
-        '<span>' +
-        '<p><input type="button" value="Edit" @click="edit" /></p>' +
-        '<p><input type="button" value="X" @click="del" /></p>' +
-        '</span>' +
-        '<hr>' +
-        '</div>',
+    template: '<tr>' +
+        '<td>{{user.surname}}</td>' +
+        '<td>{{user.name}}</td>' +
+        '<td>{{user.patronymic}}</td>' +
+        '<td>{{user.email}}</td>' +
+        '<td><input type="button" value="Edit" @click="edit" />' +
+        '<input type="button" value="delete" @click="del" /></td>' +
+        '</tr>',
     methods: {
         edit: function () {
             this.editUser(this.user)
@@ -89,7 +92,7 @@ Vue.component('users-row', {
         del: function() {
             userApi.remove({id: this.user.id}).then(result => {
                 if (result.ok) {
-                    this.messages.splice(this.messages.indexOf(this.user), 1)
+                    this.users.splice(this.users.indexOf(this.user), 1)
                 }
             })
         }
@@ -103,9 +106,27 @@ Vue.component('users-list', {
             user: null
         }
     },
-    template: '<div>' +
+    template:
+        '<div>' +
         '<user-form :users="users" :userAttr="user"/>' +
-        '<div><users-row v-for="user in users" :user="user" :editUser="editUser" :users="users"/></div>' +
+        '<table class="table">' +
+        '<thead>' +
+        '<tr>' +
+        '<th scope="col">Surname</th>' +
+        '<th scope="col">Name</th>' +
+        '<th scope="col">Patronymic</th>' +
+        '<th scope="col">Email</th>' +
+        '<th scope="col"></th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody>' +
+        '<users-row v-for="user in users" ' +
+        ':user="user" ' +
+        ':key="user.id" ' +
+        ':editUser="editUser" ' +
+        ':users="users"/>' +
+        '</tbody>' +
+        '</table>' +
         '</div>',
     created: function () {
         userApi.get().then(result =>
@@ -123,7 +144,7 @@ Vue.component('users-list', {
 });
 
 var app = new Vue({
-    el: '#app',
+    el: '#user',
     template: '<users-list :users="users"/>',
     data: {
         users: []

@@ -20,8 +20,7 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
 
     public void createCategory(CategoryDto categoryDto) {
-        Category c = categoryMapper.fromDto(categoryDto);
-        categoryRepository.save(c);
+        categoryRepository.save(categoryMapper.fromDto(categoryDto));
     }
 
     public CategoryDto getCategoryDtoById(Long id) {
@@ -49,10 +48,11 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
-    public List<CategoryDto> readAllCategories(int page, int size) {
+    public List<CategoryDto> getAllCategories(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return categoryMapper.toDto(categoryRepository.findAll(pageable).stream().toList());
     }
+
 
     public List<Category> getChildCategories(String name) {
         return categoryRepository.getChildCategories(name);
