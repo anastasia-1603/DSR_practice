@@ -34,7 +34,7 @@ public class ItemController {
     @GetMapping
     public ResponseEntity<List<ItemDto>> getAllItems(@RequestParam(defaultValue = "0", name = "page") int page,
                                                      @RequestParam(defaultValue = "20", name = "size") int size) {
-        return ResponseEntity.ok(itemService.readAllItems(page, size));
+        return ResponseEntity.ok(itemService.getAllItems(page, size));
     }
 
     @DeleteMapping("/{id}")

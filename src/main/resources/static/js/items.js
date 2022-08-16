@@ -8,19 +8,17 @@ function getIndex(list, id) {
 }
 
 var itemApi = Vue.resource('/items{/id}');
-var categoryApi = Vue.resource('/categories{/id}')
 
 Vue.component('item-form', {
-    props: ['items', 'itemAttr', 'categories'],
+    props: ['items', 'itemAttr'],
     data: function () {
         return {
             id: '',
             name: '',
             description: '',
             image: '',
-            category: {
-                name: ''
-            }
+            categoryId: '',
+            code: ''
         }
     },
     watch: {
@@ -29,25 +27,28 @@ Vue.component('item-form', {
             this.name = newValue.name;
             this.description = newValue.description;
             this.image = newValue.image;
-            this.category = newValue.category;
+            this.categoryId = newValue.categoryId;
+            this.code = newValue.code;
+
         }
     },
     template: '<div>' +
         '<input type="text" placeholder="Write name" v-model="name"/>' +
         '<input type="text" placeholder="Write description" v-model="description"/>' +
         '<input type="text" placeholder="Insert link to image" v-model="image"/>' +
-        '<categories :categories="categories" v-model="categories"/>' +
+        '<input type="text" placeholder="Insert category id" v-model="categoryId" />'+
+        '<input type="text" placeholder="Insert code" v-model="code" />'+
         '<input type="button" value="Save" @click="save"/>' +
         '</div>',
     methods: {
-
         save: function () {
             var item = {
                 id: this.id,
                 name: this.name,
                 description: this.description,
                 image: this.image,
-
+                categoryId: this.categoryId,
+                code: this.code
             };
             if (this.id) {
                 itemApi.update(item)
@@ -55,34 +56,18 @@ Vue.component('item-form', {
                         result.json().then(data => {
                             var index = getIndex(this.items, data.id);
                             this.items.splice(index, 5, data);
-                            this.name = '';
-                            this.description = '';
-                            this.image = '';
-                            this.category = '';
                         }))
             } else {
                 itemApi.save({}, item).then(result =>
                     result.json().then(data => {
                         this.items.push(data);
-                        this.name = '';
-                        this.description = '';
-                        this.image = '';
-                        this.category = '';
+
                     })
                 )
             }
         }
     }
 })
-
-Vue.component('categories', {
-    props: ['categories'],
-
-    template: '<input list="categories" v-model="category"/>' +
-        '<datalist id="categories"' +
-        '<option v-for="c in categories" :value=c.name ' +
-        '</datalist>'
-});
 
 Vue.component('items-row', {
     props: ['item', 'editItem', 'items'],
@@ -114,12 +99,11 @@ Vue.component('items-list', {
     data: function () {
         return {
             item: null,
-            categories: categoryApi.get()
         }
     },
     template:
         '<div>' +
-        '<item-form :items="items" :itemAttr="item" :categories="categories"/>' +
+        '<item-form :items="items" :itemAttr="item"/>' +
         '<table class="table">' +
         '<thead>' +
         '<tr>' +

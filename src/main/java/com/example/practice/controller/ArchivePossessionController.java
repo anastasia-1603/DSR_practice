@@ -18,7 +18,7 @@ public class ArchivePossessionController {
 
     private final ArchivePossessionService archivePossessionService;
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<List<ArchivePossessionDto>> getAll(@RequestParam(defaultValue = "0", name = "page") int page,
                                                              @RequestParam(defaultValue = "20", name = "size") int size) {
         return ResponseEntity.ok(archivePossessionService.readAll(page, size));

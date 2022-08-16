@@ -2,6 +2,7 @@ package com.example.practice.controller;
 
 import com.example.practice.dto.CategoryDto;
 import com.example.practice.service.CategoryService;
+import com.example.practice.service.ItemCategoryService;
 import com.example.practice.validator.New;
 import com.example.practice.validator.Update;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("/categories")
 public class CategoryController {
     private final CategoryService categoryService;
+    private final ItemCategoryService itemCategoryService;
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDto> getCategoryById(@PathVariable("id") Long id) {
@@ -36,7 +38,7 @@ public class CategoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
-        categoryService.deleteCategory(id);
+        itemCategoryService.deleteCategory(id);
         return ResponseEntity.ok().build();
     }
 
@@ -44,5 +46,10 @@ public class CategoryController {
     public ResponseEntity<Void> updateCategory(@Validated(Update.class) @RequestBody CategoryDto categoryDto) {
         categoryService.updateCategory(categoryDto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/names-list")
+    public ResponseEntity<List<String>> getNamesOfAllCategories() {
+        return ResponseEntity.ok(categoryService.getNamesOfAllCategories());
     }
 }

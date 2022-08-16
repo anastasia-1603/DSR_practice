@@ -53,6 +53,12 @@ public class CategoryService {
         return categoryMapper.toDto(categoryRepository.findAll(pageable).stream().toList());
     }
 
+    public List<String> getNamesOfAllCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(Category::getName)
+                .toList();
+    }
 
     public List<Category> getChildCategories(String name) {
         return categoryRepository.getChildCategories(name);

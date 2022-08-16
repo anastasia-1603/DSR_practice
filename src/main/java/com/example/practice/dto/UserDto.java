@@ -30,6 +30,5 @@ public class UserDto {
     @NotNull
     private String email;
 
-//    private List<Possession> items;
-//    private List<ArchivePossession> archive;
+
 }

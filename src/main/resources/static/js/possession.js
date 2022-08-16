@@ -1,4 +1,5 @@
-var possessionApi = Vue.resource('/archive');
+var possessionApi = Vue.resource('/users{/userId}/items{/itemId}');
+
 
 Vue.component('possession-row', {
     props: ['possession'],

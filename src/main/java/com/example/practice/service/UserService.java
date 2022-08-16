@@ -8,6 +8,7 @@ import com.example.practice.exceptions.ItemNotFoundException;
 import com.example.practice.exceptions.UserEmailExistsException;
 import com.example.practice.exceptions.UserNotFoundException;
 import com.example.practice.mapper.UserMapper;
+import com.example.practice.repository.ItemRepository;
 import com.example.practice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final ItemService itemService;
     private final PossessionService possessionService;
+    private final ItemRepository itemRepository;
 
     public void createUser(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) {
@@ -59,7 +61,7 @@ public class UserService {
 
     public void addItemToUser(Long userId, Long itemId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Item item = itemService.getItemById(itemId);
+        Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
 
         possessionService.addPossession(user, item);
     }
@@ -75,7 +77,7 @@ public class UserService {
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException();
         }
-        if (!itemService.existsById(userId)) {
+        if (!itemService.existsById(itemId)) {
             throw new ItemNotFoundException();
         }
         possessionService.deletePossession(userId, itemId);

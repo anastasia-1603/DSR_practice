@@ -2,6 +2,7 @@ package com.example.practice.service;
 
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.PageFilterSortItemDto;
+import com.example.practice.entity.Category;
 import com.example.practice.entity.Item;
 import com.example.practice.exceptions.ItemNotFoundException;
 import com.example.practice.mapper.ItemMapper;
@@ -41,6 +42,10 @@ public class ItemService {
         return itemRepository.existsById(id);
     }
 
+    public List<ItemDto> getAllItemsByCategory(Category category) {
+        return itemMapper.toDto(itemRepository.findAllByCategory(category));
+    }
+
     public void updateItem(ItemDto itemDto) {
         Item item = itemRepository.findById(itemDto.getId()).orElseThrow(ItemNotFoundException::new);
         item.setName(itemDto.getName());
@@ -58,7 +63,7 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    public List<ItemDto> readAllItems(int page, int size) {
+    public List<ItemDto> getAllItems(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         return itemMapper.toDto(itemRepository.findAll(pageable).stream().toList());

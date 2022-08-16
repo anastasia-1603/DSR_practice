@@ -69,9 +69,6 @@ Vue.component('user-form', {
                 )
             }
         },
-        linkGen(pageNum) {
-            return pageNum === 1 ? '?' : `?page=${pageNum}`
-        }
     }
 })
 
