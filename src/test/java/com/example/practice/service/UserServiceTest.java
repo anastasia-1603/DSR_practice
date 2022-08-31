@@ -50,4 +50,5 @@ public class UserServiceTest {
         UserDto user = new UserDto(0L, "Гуреев", "Павел", "Федорович", "01@mail.ru");
         userService.updateUser(user);
     }
+
 }

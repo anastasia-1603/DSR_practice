@@ -2,6 +2,7 @@ package com.example.practice.service;
 
 import com.example.practice.dto.CategoryDto;
 import com.example.practice.entity.Category;
+import com.example.practice.exceptions.CategoryExistsException;
 import com.example.practice.exceptions.CategoryNotFoundException;
 import com.example.practice.mapper.CategoryMapper;
 import com.example.practice.repository.CategoryRepository;
@@ -20,6 +21,9 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
 
     public void createCategory(CategoryDto categoryDto) {
+        if (categoryRepository.existsByName(categoryDto.getName())) {
+            throw new CategoryExistsException("Category with the same name already exists");
+        }
         categoryRepository.save(categoryMapper.fromDto(categoryDto));
     }
 
