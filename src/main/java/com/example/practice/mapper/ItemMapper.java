@@ -1,6 +1,8 @@
 package com.example.practice.mapper;
 
 import com.example.practice.dto.ItemDto;
+import com.example.practice.dto.NewItemDto;
+import com.example.practice.entity.Category;
 import com.example.practice.entity.Item;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,4 +19,14 @@ public interface ItemMapper {
     List<Item> fromDto(List<ItemDto> itemDtoList);
 
     List<ItemDto> toDto(List<Item> items);
+
+    @Mapping(source = "newItemDto.id", target = "id")
+    @Mapping(source = "newItemDto.name", target = "name")
+    @Mapping(source = "newItemDto.image", target = "image")
+    @Mapping(source = "newItemDto.description", target = "description")
+    @Mapping(source = "category", target = "category")
+    @Mapping(source = "newItemDto.code", target = "code")
+    Item fromDto(NewItemDto newItemDto, Category category);
+
+//    ItemDto toDto(Item item);
 }

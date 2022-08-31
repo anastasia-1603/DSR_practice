@@ -1,6 +1,7 @@
 package com.example.practice.service;
 
 import com.example.practice.dto.ItemDto;
+import com.example.practice.dto.NewItemDto;
 import com.example.practice.dto.PageFilterSortItemDto;
 import com.example.practice.entity.Category;
 import com.example.practice.entity.Item;
@@ -25,8 +26,9 @@ public class ItemService {
     private final ItemMapper itemMapper;
     private final CategoryService categoryService;
 
-    public void createItem(ItemDto itemDto) {
-        itemRepository.save(itemMapper.fromDto(itemDto));
+    public void createItem(NewItemDto itemDto) {
+        Category c = categoryService.getCategoryByName(itemDto.getCategoryName());
+        itemRepository.save(itemMapper.fromDto(itemDto, c));
     }
 
     public ItemDto getItemDtoById(Long id) {

@@ -1,6 +1,7 @@
 package com.example.practice.controller;
 
 import com.example.practice.dto.ItemDto;
+import com.example.practice.dto.NewItemDto;
 import com.example.practice.dto.PageFilterSortItemDto;
 import com.example.practice.service.ItemService;
 import com.example.practice.validator.New;
@@ -26,7 +27,7 @@ public class ItemController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createItem(@Validated(New.class) @RequestBody ItemDto itemDto) {
+    public ResponseEntity<Void> createItem(@Validated(New.class) @RequestBody NewItemDto itemDto) {
         itemService.createItem(itemDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
