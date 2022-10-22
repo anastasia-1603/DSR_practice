@@ -54,6 +54,11 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+//    public List<UserDto> readAllUsers(int page, int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//        return userMapper.toDto(userRepository.findAll(pageable).stream().toList());
+//    }
+
     public List<UserDto> readAllUsers(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return userMapper.toDto(userRepository.findAll(pageable).stream().toList());
@@ -72,6 +77,10 @@ public class UserService {
         }
         return possessionService.getUserItems(userId);
     }
+
+//    public List<ItemDto> getAllItemsWithOwner() {
+//        return possessionService.
+//    }
 
     public void deleteUsersItem(Long userId, Long itemId) {
         if (!userRepository.existsById(userId)) {

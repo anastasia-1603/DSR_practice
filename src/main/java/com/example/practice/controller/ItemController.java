@@ -45,7 +45,7 @@ public class ItemController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateItem(@Validated(Update.class) @RequestBody ItemDto itemDto) {
+    public ResponseEntity<Void> updateItem(@Validated(Update.class) @RequestBody NewItemDto itemDto) {
         itemService.updateItem(itemDto);
         return ResponseEntity.ok().build();
     }

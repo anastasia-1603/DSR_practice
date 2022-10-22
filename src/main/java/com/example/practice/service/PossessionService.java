@@ -1,6 +1,7 @@
 package com.example.practice.service;
 
 import com.example.practice.dto.ItemDto;
+import com.example.practice.dto.PossessionDto;
 import com.example.practice.entity.ArchivePossession;
 import com.example.practice.entity.Item;
 import com.example.practice.entity.Possession;
@@ -59,4 +60,8 @@ public class PossessionService {
         archivePossessionRepository.save(archivePossession);
         possessionRepository.delete(possession);
     }
+
+//    public List<PossessionDto> getAllPossessions() {
+//        return possessionRepository.findAll();
+//    }
 }

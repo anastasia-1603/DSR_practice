@@ -27,8 +27,8 @@ public class ItemService {
     private final CategoryService categoryService;
 
     public void createItem(NewItemDto itemDto) {
-        Category c = categoryService.getCategoryByName(itemDto.getCategoryName());
-        itemRepository.save(itemMapper.fromDto(itemDto, c));
+        itemRepository.save(itemMapper.fromDto(itemDto,
+                categoryService.getCategoryByName(itemDto.getCategoryName())));
     }
 
     public ItemDto getItemDtoById(Long id) {
@@ -48,10 +48,10 @@ public class ItemService {
         return itemMapper.toDto(itemRepository.findAllByCategory(category));
     }
 
-    public void updateItem(ItemDto itemDto) {
+    public void updateItem(NewItemDto itemDto) {
         Item item = itemRepository.findById(itemDto.getId()).orElseThrow(ItemNotFoundException::new);
         item.setName(itemDto.getName());
-        item.setCategory(categoryService.getCategoryById(itemDto.getCategory().getId()));
+        item.setCategory(categoryService.getCategoryByName(itemDto.getCategoryName()));
         item.setCode(itemDto.getCode());
         item.setDescription(itemDto.getDescription());
         item.setImage(itemDto.getImage());

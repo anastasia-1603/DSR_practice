@@ -30,7 +30,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers(@RequestParam(defaultValue = "0", name = "page") int page,
-                                                     @RequestParam(defaultValue = "20", name = "size") int size) {
+                                                     @RequestParam(defaultValue = "10", name = "size") int size) {
         return ResponseEntity.ok(userService.readAllUsers(page, size));
     }
 
@@ -56,6 +56,11 @@ public class UserController {
     public ResponseEntity<List<ItemDto>> getUserItems(@PathVariable("userId") Long userId) {
         return ResponseEntity.ok(userService.getUserItems(userId));
     }
+
+//    @GetMapping("/items")
+//    public ResponseEntity<List<ItemDto>> getAllItemsWithOwner() {
+//        return ResponseEntity.ok(userService.getUserItems(userId));
+//    }
 
     @DeleteMapping("/{userId}/items/{itemId}")
     public ResponseEntity<Void> deleteUsersItem(@PathVariable("userId") Long userId, @PathVariable("itemId") Long itemId) {

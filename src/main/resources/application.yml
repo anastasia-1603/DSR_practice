@@ -1,4 +1,6 @@
 spring:
+  thymeleaf:
+    cache: false
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
