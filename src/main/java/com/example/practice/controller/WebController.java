@@ -1,17 +1,24 @@
 package com.example.practice.controller;
 
-import com.example.practice.entity.Item;
+import com.example.practice.dto.ItemDto;
+import com.example.practice.service.ItemService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Controller
+@RequiredArgsConstructor
 public class WebController {
 
-    @GetMapping("/")
-    public String index(Model model) {
+    private final ItemService itemService;
 
-        model.addAttribute("item", new Item(1L, "new item", "//", "/img/cat1", null, 1L, null));
+    @GetMapping("")
+    public String index(Model model) {
+        List<ItemDto> items = itemService.getAllItems(0, 10);
+        model.addAttribute("items", items);
         return "index";
     }
 }
