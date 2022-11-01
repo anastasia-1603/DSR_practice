@@ -72,9 +72,9 @@ public class CategoryService {
         return categoryMapper.toDto(categoryRepository.findAll(pageable).stream().toList());
     }
 
-//    public List<CategoryDto> getAllCategories() {
-//        return categoryMapper.toDto(categoryRepository.findAll().stream().toList());
-//    }
+    public List<CategoryDto> getAllCategories() {
+        return categoryMapper.toDto(categoryRepository.findAll());
+    }
 
 
 //    public List<CategoryViewDto> getChildCategories(CategoryViewDto category) {
@@ -93,10 +93,22 @@ public class CategoryService {
         return categoryRepository.getChildCategories(name);
     }
 
+//    public List<CategoryViewDto> getChildCategories(Long id) {
+//        return categoryMapper.toViewDto(categoryRepository.getChildCategories(id));
+//    }
+
+    public List<Category> getChildCategories(Long id) {
+        return categoryRepository.getChildCategories(id);
+    }
+
     public List<Long> getChildCategoriesIds(String name) {
         return getChildCategories(name)
                 .stream()
                 .map(Category::getId)
                 .toList();
+    }
+
+    public List<CategoryViewDto> getAllCategoriesViewDto() {
+        return categoryMapper.toViewDto(categoryRepository.findAll());
     }
 }

@@ -21,6 +21,18 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             nativeQuery = true)
     List<Category> getChildCategories(@Param("name") String name);
 
+    @Query(
+            value = """
+                        with recursive q as (
+                            select * from category c where id = (:id)
+                            union all
+                            select category.* from category, q where category.parent_category_id = q.id
+                        )
+                        select * from q;
+            """,
+            nativeQuery = true)
+    List<Category> getChildCategories(@Param("id") Long id);
+
     List<Category> getCategoriesByParentCategoryId(@Param("parent_category_id") Long parentCategoryId);
 
     boolean existsByName(@Param("name") String name);

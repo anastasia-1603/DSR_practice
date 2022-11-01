@@ -41,8 +41,7 @@
 					<table>
 						<tbody>
 						<tr th:each="category : ${categories}">
-<!--							<a th:href="@{/(id=${order.id}-->
-							<td th:text="${category}"></td>
+							<td> <a th:href="@{'/web/items/category/' + ${category.getId()}}" th:text="${category.getName()}"></a></td>
 						</tr>
 						</tbody>
 					</table>

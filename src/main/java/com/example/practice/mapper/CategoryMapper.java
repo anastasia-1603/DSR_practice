@@ -23,9 +23,10 @@ public interface CategoryMapper {
 
     List<CategoryDto> toDto(List<Category> categories);
 
-//    @Mapping(source = "id", target = "categoryViewDto.id")
-//    @Mapping(source = "name", target = "name")
-//    @Mapping(source = "parentCategoryId", target = "")
-//    @Mapping(source = "newItemDto.description", target = "description")
-//    CategoryViewDto toDto(Category category); // todo
+    @Mapping(source = "category.id", target = "id")
+    @Mapping(source = "category.name", target = "name")
+    @Mapping(source = "category.parentCategoryId", target = "parentCategoryId")
+    CategoryViewDto toViewDto(Category category);
+
+    List<CategoryViewDto> toViewDto(List<Category> categories);
 }

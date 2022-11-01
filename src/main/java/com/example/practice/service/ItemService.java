@@ -1,5 +1,6 @@
 package com.example.practice.service;
 
+import com.example.practice.dto.CategoryViewDto;
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.NewItemDto;
 import com.example.practice.dto.PageFilterSortItemDto;
@@ -15,8 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +48,15 @@ public class ItemService {
     }
 
     public List<ItemDto> getAllItemsByCategory(Category category) {
-        return itemMapper.toDto(itemRepository.findAllByCategory(category));
+
+        List<Category> childCategories = categoryService.getChildCategories(category.getId());
+
+        List<Item> items = new ArrayList<>();
+
+        for (Category c : childCategories) {
+            items.addAll(itemRepository.findAllByCategory(c));
+        }
+        return itemMapper.toDto(items);
     }
 
     public void updateItem(NewItemDto itemDto) {

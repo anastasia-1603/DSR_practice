@@ -1,6 +1,7 @@
 package com.example.practice.controller;
 
 import com.example.practice.dto.CategoryDto;
+import com.example.practice.dto.CategoryViewDto;
 import com.example.practice.dto.ItemDto;
 import com.example.practice.entity.Category;
 import com.example.practice.service.CategoryService;
@@ -18,28 +19,27 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/web")
 public class HomeWebController {
 
     private final ItemService itemService;
     private final CategoryService categoryService;
     private final ItemCategoryService itemCategoryService;
 
-    @GetMapping({"/items", "/"})
+    @GetMapping({"/web/items", "/web"})
     public String home(Model model) {
         List<ItemDto> items = itemService.getAllItems();
-        List<String> categories = categoryService.getNamesOfAllCategories();
+        List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
         model.addAttribute("items", items);
         model.addAttribute("categories", categories);
         return "index";
     }
 
-    @GetMapping("/items/category/{categoryId}")
+    @GetMapping("/web/items/category/{categoryId}")
     public String getItemsByCategory(@PathVariable Long categoryId, Model model) {
         List<ItemDto> items = itemCategoryService.getAllItemsByCategoryId(categoryId);
-        List<String> categories = categoryService.getNamesOfAllCategories();
+        List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
         model.addAttribute("items", items);
         model.addAttribute("categories", categories);
-        return "index"; //todo
+        return "index";
     }
 }

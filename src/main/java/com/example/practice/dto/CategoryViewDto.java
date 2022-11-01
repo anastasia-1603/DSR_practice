@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
-
 
 @Data
 @AllArgsConstructor
@@ -21,5 +19,4 @@ public class CategoryViewDto {
 
     private Long parentCategoryId;
 
-    private List<CategoryViewDto> childCategories;
 }
