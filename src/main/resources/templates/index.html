@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Accounting system</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+	<div class="header"><h1>Система учета вещей</h1></div>
+	<div class="navbar">
+		<div class="nav">
+			<a href="#">Вещи</a>
+			<a href="#">Пользователи</a>
+			<a href="#">Архив</a>
+		</div>
+		<div class="sort">
+			<p>Сортировать по:</p>
+			<a href="#">Названию</a>
+			<a href="#">Владельцу</a>
+		</div>
+		<div class="search">
+			<img src="/img/search.png" width="18" height="18">
+			<p>искать</p>
+		</div>
+	</div>
+	<div class="content">
+		<div class="category">
+			<div th:switch="${categories}">
+				<h2 th:case="null">No categories found!</h2>
+				<div th:case="*">
+					<table>
+						<tbody>
+						<tr th:each="category : ${categories}">
+<!--							<a th:href="@{/(id=${order.id}-->
+							<td th:text="${category}"></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div th:insert="items-table :: items (${items})"></div>
+			<p><a href="/item-create">Create item</a></p>
+		</div>
+	</div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="items (items)">
+	<div class="table">
+		<div th:switch="${items}">
+			<h2 th:case="null">No items found!</h2>
+			<div th:case="*">
+				<table>
+					<thead>
+					<tr>
+						<th>Name</th>
+						<th>Descr</th>
+						<th>Image</th>
+						<th>Category</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="item : ${items}">
+						<td th:text="${item.getName()}"></td>
+						<td class="descr" th:text="${item.getDescription()}"></td>
+						<td><img
+								th:src="@{${'/img/' + (item.getImage() != null ? item.getImage() : 'img_placeholder.png')}}"
+								width="50px"></td>
+						<td th:text="${item.getCategory().getName()}"></td>
+						<td><a href="/item-update">update</a></td>
+						<td><a href="/item-delete">delete</a></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

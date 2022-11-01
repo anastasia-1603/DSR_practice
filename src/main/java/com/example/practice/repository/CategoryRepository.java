@@ -21,6 +21,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             nativeQuery = true)
     List<Category> getChildCategories(@Param("name") String name);
 
+    List<Category> getCategoriesByParentCategoryId(@Param("parent_category_id") Long parentCategoryId);
+
     boolean existsByName(@Param("name") String name);
 
     Category findByName(@Param("name") String name);

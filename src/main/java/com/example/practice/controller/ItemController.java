@@ -51,7 +51,7 @@ public class ItemController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("filter")
+    @GetMapping("/filter")
     public ResponseEntity<List<ItemDto>> getAllItemsFiltered(@RequestBody PageFilterSortItemDto itemDto) {
         return ResponseEntity.status(HttpStatus.OK).body(itemService.filterSortItemsPage(itemDto));
     }

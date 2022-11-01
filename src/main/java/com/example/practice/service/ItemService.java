@@ -71,6 +71,10 @@ public class ItemService {
         return itemMapper.toDto(itemRepository.findAll(pageable).stream().toList());
     }
 
+    public List<ItemDto> getAllItems() {
+        return itemMapper.toDto(itemRepository.findAll());
+    }
+
     public List<ItemDto> filterSortItemsPage(PageFilterSortItemDto itemDto) {
         if (itemDto.getPage() < 0 || itemDto.getSize() < 0) {
             return Collections.emptyList();

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="categories (categories)">
+	<div class="category">
+		<div th:switch="${categories}">
+			<h2 th:case="null">No categories found!</h2>
+			<div th:case="*">
+				<ul th:each="category : ${categories}">
+					<li th:each="c : ${category.}""></li>
+				</ul>
+
+
+				<table>
+					<tbody>
+					<tr th:each="category : ${categories}">
+						<td th:text="${category}"></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

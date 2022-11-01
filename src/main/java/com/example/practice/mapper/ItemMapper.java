@@ -28,5 +28,4 @@ public interface ItemMapper {
     @Mapping(source = "newItemDto.code", target = "code")
     Item fromDto(NewItemDto newItemDto, Category category);
 
-//    ItemDto toDto(Item item);
 }

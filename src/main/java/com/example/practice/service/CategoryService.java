@@ -1,6 +1,7 @@
 package com.example.practice.service;
 
 import com.example.practice.dto.CategoryDto;
+import com.example.practice.dto.CategoryViewDto;
 import com.example.practice.entity.Category;
 import com.example.practice.exceptions.CategoryExistsException;
 import com.example.practice.exceptions.CategoryNotFoundException;
@@ -62,10 +63,24 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
+    public List<CategoryDto> getCategoriesByParentId(Long parentId) {
+        return categoryMapper.toDto(categoryRepository.getCategoriesByParentCategoryId(parentId));
+    }
+
     public List<CategoryDto> getAllCategories(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return categoryMapper.toDto(categoryRepository.findAll(pageable).stream().toList());
     }
+
+//    public List<CategoryDto> getAllCategories() {
+//        return categoryMapper.toDto(categoryRepository.findAll().stream().toList());
+//    }
+
+
+//    public List<CategoryViewDto> getChildCategories(CategoryViewDto category) {
+//        return categoryMapper.toDto(categoryRepository.getCategoriesByParentCategoryId(category.getParentCategoryId()));
+//    } //todo
+
 
     public List<String> getNamesOfAllCategories() {
         return categoryRepository.findAll()
@@ -77,6 +92,7 @@ public class CategoryService {
     public List<Category> getChildCategories(String name) {
         return categoryRepository.getChildCategories(name);
     }
+
     public List<Long> getChildCategoriesIds(String name) {
         return getChildCategories(name)
                 .stream()

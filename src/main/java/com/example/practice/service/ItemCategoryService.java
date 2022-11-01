@@ -1,5 +1,6 @@
 package com.example.practice.service;
 
+import com.example.practice.dto.CategoryDto;
 import com.example.practice.dto.ItemDto;
 import com.example.practice.entity.Category;
 import lombok.RequiredArgsConstructor;
@@ -23,5 +24,18 @@ public class ItemCategoryService {
         }
     }
 
+    public List<ItemDto> getAllItemsByCategory(CategoryDto categoryDto) {
+        Category category = categoryService.getCategoryById(categoryDto.getId());
+        return itemService.getAllItemsByCategory(category);
+    }
 
+    public List<ItemDto> getAllItemsByCategoryId(Long categoryId) {
+        Category category = categoryService.getCategoryById(categoryId);
+        return itemService.getAllItemsByCategory(category);
+    }
+
+    public List<ItemDto> getAllItemsByCategoryName(String categoryName) {
+        Category category = categoryService.getCategoryByName(categoryName);
+        return itemService.getAllItemsByCategory(category);
+    }
 }
