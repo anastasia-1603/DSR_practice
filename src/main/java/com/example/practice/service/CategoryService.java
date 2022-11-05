@@ -76,12 +76,6 @@ public class CategoryService {
         return categoryMapper.toDto(categoryRepository.findAll());
     }
 
-
-//    public List<CategoryViewDto> getChildCategories(CategoryViewDto category) {
-//        return categoryMapper.toDto(categoryRepository.getCategoriesByParentCategoryId(category.getParentCategoryId()));
-//    } //todo
-
-
     public List<String> getNamesOfAllCategories() {
         return categoryRepository.findAll()
                 .stream()
@@ -92,10 +86,6 @@ public class CategoryService {
     public List<Category> getChildCategories(String name) {
         return categoryRepository.getChildCategories(name);
     }
-
-//    public List<CategoryViewDto> getChildCategories(Long id) {
-//        return categoryMapper.toViewDto(categoryRepository.getChildCategories(id));
-//    }
 
     public List<Category> getChildCategories(Long id) {
         return categoryRepository.getChildCategories(id);

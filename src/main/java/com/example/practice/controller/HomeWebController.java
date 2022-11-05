@@ -1,6 +1,5 @@
 package com.example.practice.controller;
 
-import com.example.practice.dto.CategoryDto;
 import com.example.practice.dto.CategoryViewDto;
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.NewItemDto;
@@ -66,10 +65,6 @@ public class HomeWebController {
         itemService.createItem(item);
         String uploadDir = "static/img/";
         FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
-//        List<ItemDto> items = itemService.getAllItems();
-//        List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
-//        model.addAttribute("items", items);
-//        model.addAttribute("categories", categories);
         return "redirect:/web";
     }
 }
