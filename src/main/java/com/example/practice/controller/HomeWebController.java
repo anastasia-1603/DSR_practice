@@ -4,7 +4,6 @@ import com.example.practice.dto.CategoryDto;
 import com.example.practice.dto.CategoryViewDto;
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.NewItemDto;
-import com.example.practice.entity.Category;
 import com.example.practice.service.CategoryService;
 import com.example.practice.service.ItemCategoryService;
 import com.example.practice.service.ItemService;
@@ -15,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -68,10 +66,10 @@ public class HomeWebController {
         itemService.createItem(item);
         String uploadDir = "static/img/";
         FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
-        List<ItemDto> items = itemService.getAllItems();
-        List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
-        model.addAttribute("items", items);
-        model.addAttribute("categories", categories);
-        return "index";
+//        List<ItemDto> items = itemService.getAllItems();
+//        List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
+//        model.addAttribute("items", items);
+//        model.addAttribute("categories", categories);
+        return "redirect:/web";
     }
 }
