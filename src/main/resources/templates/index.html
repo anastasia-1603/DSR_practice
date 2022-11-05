@@ -19,7 +19,7 @@
 	<div class="header"><h1>Система учета вещей</h1></div>
 	<div class="navbar">
 		<div class="nav">
-			<a href="#">Вещи</a>
+			<a th:href="@{'/web/items/'}">Вещи</a>
 			<a href="#">Пользователи</a>
 			<a href="#">Архив</a>
 		</div>
@@ -49,8 +49,8 @@
 			</div>
 		</div>
 		<div>
+			<p><a href="/web/items/create">Create item</a></p>
 			<div th:insert="items-table :: items (${items})"></div>
-			<p><a href="/item-create">Create item</a></p>
 		</div>
 	</div>
 </div>

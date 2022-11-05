@@ -45,6 +45,16 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(value = UsersItemNotFoundException.class)
     public ResponseEntity<String> handleUsersItemNotFound(UsersItemNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = ImageNotFoundException.class)
+    public ResponseEntity<String> handleImageNotFound(ImageNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = CreateDirectoriesException.class)
+    public ResponseEntity<String> handleCreateDirectoryEx(CreateDirectoriesException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 }

@@ -6,15 +6,10 @@
 		<div th:switch="${categories}">
 			<h2 th:case="null">No categories found!</h2>
 			<div th:case="*">
-				<ul th:each="category : ${categories}">
-					<li th:each="c : ${category.}""></li>
-				</ul>
-
-
 				<table>
 					<tbody>
 					<tr th:each="category : ${categories}">
-						<td th:text="${category}"></td>
+						<td> <a th:href="@{'/web/items/category/' + ${category.getId()}}" th:text="${category.getName()}"></a></td>
 					</tr>
 					</tbody>
 				</table>

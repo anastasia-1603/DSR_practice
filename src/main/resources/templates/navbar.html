@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="navbar">
+	<div class="navbar">
+		<div class="nav">
+			<a th:href="@{'/web/items/'}">Вещи</a>
+			<a href="#">Пользователи</a>
+			<a href="#">Архив</a>
+		</div>
+		<div class="sort">
+			<p>Сортировать по:</p>
+			<a href="#">Названию</a>
+			<a href="#">Владельцу</a>
+		</div>
+		<div class="search">
+			<img src="/img/search.png" width="18" height="18">
+			<p>искать</p>
+		</div>
+	</div>
+</div>
+</body>
+</html>
+
