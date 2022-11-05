@@ -63,7 +63,7 @@ public class HomeWebController {
         item.setCode(code);
         item.setImage(filename);
         itemService.createItem(item);
-        String uploadDir = "static/img/";
+        String uploadDir = "src/main/resources/static/img";
         FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
         return "redirect:/web";
     }
