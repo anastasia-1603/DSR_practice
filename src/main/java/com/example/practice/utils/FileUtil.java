@@ -4,10 +4,12 @@ import java.io.*;
 import java.nio.file.*;
 
 import com.example.practice.exceptions.CreateDirectoriesException;
+import com.example.practice.exceptions.DeleteFileException;
+import com.example.practice.exceptions.DirectoryNotFoundException;
 import com.example.practice.exceptions.ImageNotFoundException;
 import org.springframework.web.multipart.MultipartFile;
 
-public class FileUploadUtil {
+public class FileUtil {
 
     public static void saveFile(String uploadDir, String fileName,
                                 MultipartFile multipartFile) {
@@ -24,6 +26,17 @@ public class FileUploadUtil {
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new ImageNotFoundException("Could not save image file: " + fileName);
+        }
+    }
+
+    public static void deleteFile(String fileDirectory) {
+        Path filePath = Paths.get(fileDirectory);
+        try {
+            Files.delete(filePath);
+        } catch (NoSuchFileException x) {
+            throw new ImageNotFoundException("File not found");
+        } catch (IOException x) {
+            throw new DeleteFileException("Could not delete file");
         }
     }
 }

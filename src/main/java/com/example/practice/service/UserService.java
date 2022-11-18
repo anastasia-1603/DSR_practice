@@ -54,10 +54,9 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-//    public List<UserDto> readAllUsers(int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        return userMapper.toDto(userRepository.findAll(pageable).stream().toList());
-//    }
+    public List<UserDto> readAllUsers() {
+        return userMapper.toDto(userRepository.findAll());
+    }
 
     public List<UserDto> readAllUsers(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);

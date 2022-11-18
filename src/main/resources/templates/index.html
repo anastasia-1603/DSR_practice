@@ -20,7 +20,7 @@
 	<div class="navbar">
 		<div class="nav">
 			<a th:href="@{'/web/items/'}">Вещи</a>
-			<a href="#">Пользователи</a>
+			<a th:href="@{'/web/users/'}">Пользователи</a>
 			<a href="#">Архив</a>
 		</div>
 		<div class="sort">
@@ -49,7 +49,7 @@
 			</div>
 		</div>
 		<div>
-			<p><a href="/web/items/create">Create item</a></p>
+			<p><a href="/web/items/create">Добавить вещь</a></p>
 			<div th:insert="items-table :: items (${items})"></div>
 		</div>
 	</div>

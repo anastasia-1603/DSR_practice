@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Accounting system</title>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+	<div class="header"><h1>Пользователи</h1></div>
+	<div class="content">
+		<div>
+			<p><a href="/web/users/create">Добавить пользователя</a></p>
+			<div class="table">
+				<div th:switch="${users}">
+					<h2 th:case="null">No users found!</h2>
+					<div th:case="*">
+						<table>
+							<thead>
+							<tr>
+								<th>Surname</th>
+								<th>Name</th>
+								<th>Patronymic</th>
+								<th>Email</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr th:each="user : ${users}">
+								<td th:text="${user.getSurname()}"></td>
+								<td th:text="${user.getName()}"></td>
+								<td th:text="${user.getPatronymic()}"></td>
+								<td th:text="${user.getEmail()}"></td>
+								<td><a href="/user-update">update</a></td>
+								<td><a href="/user-delete">delete</a></td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+
+</html>

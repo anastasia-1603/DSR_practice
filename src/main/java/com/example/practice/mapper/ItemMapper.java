@@ -28,4 +28,11 @@ public interface ItemMapper {
     @Mapping(source = "newItemDto.code", target = "code")
     Item fromDto(NewItemDto newItemDto, Category category);
 
+    @Mapping(source = "item.id", target = "id")
+    @Mapping(source = "item.name", target = "name")
+    @Mapping(source = "item.image", target = "image")
+    @Mapping(source = "item.description", target = "description")
+    @Mapping(source = "item.category.name", target = "categoryName")
+    @Mapping(source = "item.code", target = "code")
+    NewItemDto toNewItemDto(Item item);
 }

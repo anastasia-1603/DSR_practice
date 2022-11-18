@@ -6,7 +6,7 @@ import com.example.practice.dto.NewItemDto;
 import com.example.practice.service.CategoryService;
 import com.example.practice.service.ItemCategoryService;
 import com.example.practice.service.ItemService;
-import com.example.practice.utils.FileUploadUtil;
+import com.example.practice.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,17 +54,26 @@ public class HomeWebController {
     @PostMapping("/web/items/create")
     public String createItemSubmit(@RequestParam String name, @RequestParam String description,
                              @RequestParam String categoryName, @RequestParam("image") MultipartFile multipartFile,
-                             @RequestParam Long code, Model model) {
-        NewItemDto item = new NewItemDto();
-        String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        item.setName(name);
-        item.setDescription(description);
-        item.setCategoryName(categoryName);
-        item.setCode(code);
-        item.setImage(filename);
-        itemService.createItem(item);
-        String uploadDir = "src/main/resources/static/img";
-        FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
+                             @RequestParam Long code) {
+        itemService.createItem(name, description, categoryName, multipartFile, code);
+        return "redirect:/web"; //todo сделать, чтобы можно было не загружать изображение
+    }
+
+    @GetMapping("/web/items/update/{itemId}") // todo разобраться как сделать ссылку
+    public String updateItemPage(Model model, @PathVariable Long itemId) {
+        NewItemDto item = itemService.getNewItemDtoById(itemId);
+        List<String> categories = categoryService.getNamesOfAllCategories();
+        model.addAttribute("item", item);
+        model.addAttribute("categories", categories);
+        return "update-item";
+    }
+
+    @PostMapping("/web/items/update/{itemId}")
+    public String updateItemSubmit(@PathVariable Long itemId, @RequestParam String name, @RequestParam String description,
+                             @RequestParam String categoryName, @RequestParam("image") MultipartFile multipartFile,
+                             @RequestParam Long code) {
+        itemService.updateItem(itemId, name, description, categoryName, multipartFile, code);
         return "redirect:/web";
     }
+
 }

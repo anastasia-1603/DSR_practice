@@ -57,4 +57,14 @@ public class ExceptionAdvice {
     public ResponseEntity<String> handleCreateDirectoryEx(CreateDirectoriesException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
+    @ExceptionHandler(value = DeleteFileException.class)
+    public ResponseEntity<String> handleDeleteFileEx(DeleteFileException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = DirectoryNotFoundException.class)
+    public ResponseEntity<String> handleDirectoryNotFound(DirectoryNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }
