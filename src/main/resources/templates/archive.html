@@ -17,15 +17,14 @@
 
 <body>
 <div class="container">
-	<div class="header"><h1>Пользователи</h1></div>
+	<div class="header"><h1>Архив</h1></div>
 	<div class="content">
 		<div>
-			<p><a href="/web/users/create">Добавить пользователя</a></p>
 			<p><a href="/web">Вернуться на главную страницу</a></p>
-
+			
 			<div class="table">
-				<div th:switch="${users}">
-					<h2 th:case="null">No users found!</h2>
+				<div th:switch="${archive}">
+					<h2 th:case="null">No possessions found!</h2>
 					<div th:case="*">
 						<table>
 							<thead>
@@ -33,43 +32,41 @@
 								<th>Фамилия</th>
 								<th>Имя</th>
 								<th>Отчество</th>
-								<th>Email</th>
-								<th></th>
-								<th></th>
-								<th></th>
+								<th>Название вещи</th>
+								<th>С даты</th>
+								<th>По дату</th>
 							</tr>
 							</thead>
 							<tbody>
-							<tr th:each="user : ${users.getContent()}">
-								<td th:text="${user.getSurname()}"></td>
-								<td th:text="${user.getName()}"></td>
-								<td th:text="${user.getPatronymic()}"></td>
-								<td th:text="${user.getEmail()}"></td>
-								<td><a th:href="@{'/web/users/update/'+${user.getId()}+'?size='+${users.getSize()}+'&page='+${users.getNumber}}">update</a></td>
-								<td><a th:href="@{'/web/users/delete/'+${user.getId()}+'?size='+${users.getSize()}+'&page='+${users.getNumber}}">delete</a></td>
-								<td><a th:href="@{'/web/user/' + ${user.getId()} + '/items'}">items</a></td>
+							<tr th:each="poss : ${archive.getContent()}">
+								<td th:text="${poss.getUser().getSurname()}"></td>
+								<td th:text="${poss.getUser().getName()}"></td>
+								<td th:text="${poss.getUser().getPatronymic()}"></td>
+								<td th:text="${poss.getItem().getName()}"></td>
+								<td th:text="${poss.getWithDate()}"></td>
+								<td th:text="${poss.getToDate()}"></td>
 							</tr>
 							</tbody>
 						</table>
-
-						<nav aria-label="Pagination" th:if="${users.getTotalPages() gt 1}">
+						
+						<nav aria-label="Pagination" th:if="${archive.getTotalPages() gt 1}">
 							<ul class="pagination justify-content-center font-weight-medium">
-								<li class="page-item" th:classappend="${users.getNumber() eq 0} ? 'disabled'">
+								<li class="page-item" th:classappend="${archive.getNumber() eq 0} ? 'disabled'">
 									<a class="page-link svg-icon"
-									   th:href="@{/web/users(size=${users.getSize()},
-									   page=${users.getNumber() lt 10 ? 0 : users.getNumber()-10})}"
+									   th:href="@{/web/archive(size=${archive.getSize()},
+									   page=${archive.getNumber() lt 10 ? 0 : archive.getNumber()-10})}"
 									   aria-label="Previous"
 									   title="Previous" rel="tooltip">
 										<span aria-hidden="true" data-feather="chevrons-left" width="20" height="20">&laquo;</span>
 									</a>
 								</li>
-								<li class="page-item" th:classappend="${i eq users.getNumber() + 1} ? 'active'"
-									th:each="i : ${#numbers.sequence( (users.getNumber()+1 >= users.getTotalPages() - 10 ? users.getTotalPages() - 9 : users.getNumber() + 1), (users.getTotalPages() > 10 + users.getNumber() ? users.getNumber() + 10 : users.getTotalPages()), 1)}">
-									<a class="page-link" th:href="@{/web/users(size=${users.getSize()}, page=${i - 1})}" th:text="${i}"
+								<li class="page-item" th:classappend="${i eq archive.getNumber() + 1} ? 'active'"
+									th:each="i : ${#numbers.sequence( (archive.getNumber()+1 >= archive.getTotalPages() - 10 ? archive.getTotalPages() - 9 : archive.getNumber() + 1), (archive.getTotalPages() > 10 + archive.getNumber() ? archive.getNumber() + 10 : archive.getTotalPages()), 1)}">
+									<a class="page-link" th:href="@{/web/archive(size=${archive.getSize()}, page=${i - 1})}" th:text="${i}"
 									   rel="tooltip"></a>
 								</li>
-								<li class="page-item" th:classappend="${users.getNumber() + 10 ge users.getTotalPages()} ? 'disabled'">
-									<a class="page-link svg-icon" th:href="@{/web/users/(size=${users.getSize()}, page=${users.getNumber() + 10})}"
+								<li class="page-item" th:classappend="${archive.getNumber() + 10 ge archive.getTotalPages()} ? 'disabled'">
+									<a class="page-link svg-icon" th:href="@{/web/archive/(size=${archive.getSize()}, page=${archive.getNumber() + 10})}"
 									   aria-label="Next"
 									   title="Next" rel="tooltip">
 										<span aria-hidden="true" data-feather="chevrons-right" width="20" height="20">&raquo;</span>

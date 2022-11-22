@@ -16,7 +16,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class ItemWebController {
+public class WebItemController {
 
     private final ItemService itemService;
     private final CategoryService categoryService;
