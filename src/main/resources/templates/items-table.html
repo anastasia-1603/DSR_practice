@@ -24,7 +24,7 @@
 								width="50px"></td>
 						<td th:text="${item.getCategory().getName()}"></td>
 						<td><a th:href="@{'/web/items/update/' + ${item.getId()}}">update</a></td>
-						<td><a  th:href="@{'/web/items/delete/' + ${item.getId()}}">delete</a></td>
+						<td><a th:href="@{'/web/items/delete/' + ${item.getId()}}">delete</a></td>
 					</tr>
 					</tbody>
 				</table>

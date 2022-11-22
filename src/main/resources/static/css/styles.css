@@ -164,7 +164,7 @@ a {
     width: 100%;
     height: fit-content;
     background: #c1c9d7;
-    border-radius: -9px;
+    border-radius: 9px;
     flex: none;
     order: 1;
     flex-grow: 1;
@@ -180,3 +180,21 @@ th, td {
     text-align: left;
     width: 20em;
 }
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}

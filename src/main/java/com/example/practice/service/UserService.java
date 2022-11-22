@@ -11,11 +11,15 @@ import com.example.practice.mapper.UserMapper;
 import com.example.practice.repository.ItemRepository;
 import com.example.practice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +38,18 @@ public class UserService {
         userRepository.save(userMapper.fromDto(userDto));
     }
 
+    public void createUser(String surname, String name, String patronymic, String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new UserEmailExistsException();
+        }
+        UserDto userDto = new UserDto();
+        userDto.setSurname(surname);
+        userDto.setName(name);
+        userDto.setPatronymic(patronymic);
+        userDto.setEmail(email);
+        userRepository.save(userMapper.fromDto(userDto));
+    }
+
     public UserDto getUserById(Long id) {
         return userMapper.toDto(userRepository.findById(id).orElseThrow(UserNotFoundException::new));
     }
@@ -44,6 +60,15 @@ public class UserService {
         user.setPatronymic(userDto.getPatronymic());
         user.setSurname(userDto.getSurname());
         user.setEmail(userDto.getEmail());
+        userRepository.save(user);
+    }
+
+    public void updateUser(Long userId, String surname, String name, String patronymic, String email) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        user.setName(name);
+        user.setPatronymic(patronymic);
+        user.setSurname(surname);
+        user.setEmail(email);
         userRepository.save(user);
     }
 
@@ -58,9 +83,29 @@ public class UserService {
         return userMapper.toDto(userRepository.findAll());
     }
 
+    public List<UserDto> readAllUsersSortedById() {
+        return userMapper.toDto(userRepository.findAllByOrderByIdAsc());
+    }
+
     public List<UserDto> readAllUsers(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return userMapper.toDto(userRepository.findAll(pageable).stream().toList());
+    }
+
+    public Page<UserDto> getPageUsers(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
+        Page<UserDto> usersDtoPages = userRepository.findAll(pageable).map(user -> new UserDto(user.getId(),
+                user.getSurname(), user.getName(), user.getPatronymic(), user.getEmail()));
+        return usersDtoPages;
+    }
+
+    public Integer getTotalPages(int page, int size) {
+        return userRepository.findAll(PageRequest.of(page, size)).getTotalPages();
+    }
+
+    public List<Integer> getPageNumbers(int page, int size) {
+        int totalPages = userRepository.findAll(PageRequest.of(page, size)).getTotalPages();
+        return IntStream.rangeClosed(0, totalPages).boxed().toList();
     }
 
     public void addItemToUser(Long userId, Long itemId) {

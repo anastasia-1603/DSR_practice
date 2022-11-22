@@ -6,11 +6,9 @@ import com.example.practice.dto.NewItemDto;
 import com.example.practice.service.CategoryService;
 import com.example.practice.service.ItemCategoryService;
 import com.example.practice.service.ItemService;
-import com.example.practice.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +16,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class HomeWebController {
+public class ItemWebController {
 
     private final ItemService itemService;
     private final CategoryService categoryService;
@@ -56,7 +54,7 @@ public class HomeWebController {
                              @RequestParam String categoryName, @RequestParam("image") MultipartFile multipartFile,
                              @RequestParam Long code) {
         itemService.createItem(name, description, categoryName, multipartFile, code);
-        return "redirect:/web"; //todo сделать, чтобы можно было не загружать изображение
+        return "redirect:/web";
     }
 
     @GetMapping("/web/items/update/{itemId}") // todo разобраться как сделать ссылку
@@ -74,6 +72,12 @@ public class HomeWebController {
                              @RequestParam Long code) {
         itemService.updateItem(itemId, name, description, categoryName, multipartFile, code);
         return "redirect:/web";
+    }
+
+    @GetMapping("/web/items/delete/{itemId}")
+    public String deleteItem(@PathVariable Long itemId) {
+        itemService.deleteItem(itemId);
+        return "redirect:/web/items/";
     }
 
 }

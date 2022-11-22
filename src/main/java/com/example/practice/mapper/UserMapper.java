@@ -3,6 +3,7 @@ package com.example.practice.mapper;
 import com.example.practice.dto.UserDto;
 import com.example.practice.entity.User;
 import org.mapstruct.Mapper;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -16,4 +17,8 @@ public interface UserMapper {
     List<User> fromDto(List<UserDto> userDtoList);
 
     List<UserDto> toDto(List<User> users);
+
+//    Page<UserDto> toUserDtoPage(Page<User> userPage);
+//
+//    List<Page<UserDto>> toUserDtoPages(List<Page<User>> userPages);
 }
