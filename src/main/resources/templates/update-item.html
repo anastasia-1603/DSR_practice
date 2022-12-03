@@ -46,7 +46,7 @@
 
 			<div class="col-md-2">
 				<label for="code" class="form-label">Code</label>
-				<input type="text" class="form-control" th:field="*{code}" id="code" placeholder="code">
+				<input type="number" class="form-control" th:field="*{code}" id="code" placeholder="code">
 				<span th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></span>
 			</div>
 

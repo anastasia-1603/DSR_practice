@@ -19,8 +19,10 @@ public class WebArchiveController {
     public String getAll(Model model,
                          @RequestParam(defaultValue = "0", name = "page") int page,
                          @RequestParam(defaultValue = "20", name = "size") int size) {
+
         Page<ArchivePossessionDto> archive = archiveService.readAllPaginated(page, size);
         model.addAttribute("archive", archive);
+        model.addAttribute("url", "/web/archive");
         return "archive";
     }
 

@@ -3,12 +3,14 @@ package com.example.practice.controller;
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.UserDto;
 import com.example.practice.service.UserService;
-import com.example.practice.validator.*;
+import com.example.practice.validator.New;
+import com.example.practice.validator.Update;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController

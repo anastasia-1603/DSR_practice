@@ -2,7 +2,6 @@ package com.example.practice.dto;
 
 import com.example.practice.validator.New;
 import com.example.practice.validator.Update;
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

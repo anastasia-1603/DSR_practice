@@ -1,13 +1,13 @@
 package com.example.practice.utils;
 
-import java.io.*;
-import java.nio.file.*;
-
 import com.example.practice.exceptions.CreateDirectoriesException;
 import com.example.practice.exceptions.DeleteFileException;
-import com.example.practice.exceptions.DirectoryNotFoundException;
 import com.example.practice.exceptions.ImageNotFoundException;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.*;
 
 public class FileUtil {
 

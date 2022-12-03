@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="pagination (page, url)">
+	<div class="table">
+		<nav aria-label="Pagination" th:if="${page.getTotalPages() gt 1}">
+			<ul class="pagination justify-content-center font-weight-medium">
+				<li class="page-item" th:classappend="${page.getNumber() eq 0} ? 'disabled'">
+					<a class="page-link svg-icon"
+					   th:href="@{${url}(size=${page.getSize()},
+									   page=${page.getNumber() lt 10 ? 0 : page.getNumber()-10})}"
+					   aria-label="Previous"
+					   title="Previous" rel="tooltip">
+						<span aria-hidden="true" data-feather="chevrons-left" width="20" height="20">&laquo;</span>
+					</a>
+				</li>
+				<li class="page-item" th:classappend="${i eq page.getNumber() + 1} ? 'active'"
+					th:each="i : ${#numbers.sequence( (page.getNumber()+1 >= page.getTotalPages() - 10 ? page.getTotalPages() - 9 : page.getNumber() + 1), (page.getTotalPages() > 10 + page.getNumber() ? page.getNumber() + 10 : page.getTotalPages()), 1)}">
+					<a class="page-link" th:href="@{${url}(size=${page.getSize()}, page=${i - 1})}" th:text="${i}"
+					   rel="tooltip"></a>
+				</li>
+				<li class="page-item" th:classappend="${page.getNumber() + 10 ge page.getTotalPages()} ? 'disabled'">
+					<a class="page-link svg-icon"
+					   th:href="@{${url}(size=${page.getSize()}, page=${page.getNumber() + 10})}"
+					   aria-label="Next"
+					   title="Next" rel="tooltip">
+						<span aria-hidden="true" data-feather="chevrons-right" width="20" height="20">&raquo;</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+
+	</div>
+</div>
+</body>
+</html>
+

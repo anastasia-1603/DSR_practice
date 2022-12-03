@@ -3,6 +3,7 @@ package com.example.practice.service;
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.NewItemDto;
 import com.example.practice.dto.PageFilterSortItemDto;
+import com.example.practice.dto.UserDto;
 import com.example.practice.entity.Category;
 import com.example.practice.entity.Item;
 import com.example.practice.exceptions.ItemNotFoundException;
@@ -11,8 +12,10 @@ import com.example.practice.repository.ItemRepository;
 import com.example.practice.specifications.ItemSpecification;
 import com.example.practice.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -125,6 +128,11 @@ public class ItemService {
         Pageable pageable = PageRequest.of(page, size);
 
         return itemMapper.toDto(itemRepository.findAll(pageable).stream().toList());
+    }
+
+    public Page<ItemDto> getPageItems(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
+        return itemRepository.findAll(pageable).map(itemMapper::toDto);
     }
 
     public List<ItemDto> getAllItems() {

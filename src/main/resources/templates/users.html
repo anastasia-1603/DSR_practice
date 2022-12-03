@@ -52,31 +52,31 @@
 							</tbody>
 						</table>
 
-						<nav aria-label="Pagination" th:if="${users.getTotalPages() gt 1}">
-							<ul class="pagination justify-content-center font-weight-medium">
-								<li class="page-item" th:classappend="${users.getNumber() eq 0} ? 'disabled'">
-									<a class="page-link svg-icon"
-									   th:href="@{/web/users(size=${users.getSize()},
-									   page=${users.getNumber() lt 10 ? 0 : users.getNumber()-10})}"
-									   aria-label="Previous"
-									   title="Previous" rel="tooltip">
-										<span aria-hidden="true" data-feather="chevrons-left" width="20" height="20">&laquo;</span>
-									</a>
-								</li>
-								<li class="page-item" th:classappend="${i eq users.getNumber() + 1} ? 'active'"
-									th:each="i : ${#numbers.sequence( (users.getNumber()+1 >= users.getTotalPages() - 10 ? users.getTotalPages() - 9 : users.getNumber() + 1), (users.getTotalPages() > 10 + users.getNumber() ? users.getNumber() + 10 : users.getTotalPages()), 1)}">
-									<a class="page-link" th:href="@{/web/users(size=${users.getSize()}, page=${i - 1})}" th:text="${i}"
-									   rel="tooltip"></a>
-								</li>
-								<li class="page-item" th:classappend="${users.getNumber() + 10 ge users.getTotalPages()} ? 'disabled'">
-									<a class="page-link svg-icon" th:href="@{/web/users/(size=${users.getSize()}, page=${users.getNumber() + 10})}"
-									   aria-label="Next"
-									   title="Next" rel="tooltip">
-										<span aria-hidden="true" data-feather="chevrons-right" width="20" height="20">&raquo;</span>
-									</a>
-								</li>
-							</ul>
-						</nav>
+<!--						<nav aria-label="Pagination" th:if="${users.getTotalPages() gt 1}">-->
+<!--							<ul class="pagination justify-content-center font-weight-medium">-->
+<!--								<li class="page-item" th:classappend="${users.getNumber() eq 0} ? 'disabled'">-->
+<!--									<a class="page-link svg-icon"-->
+<!--									   th:href="@{/web/users(size=${users.getSize()},-->
+<!--									   page=${users.getNumber() lt 10 ? 0 : users.getNumber()-10})}"-->
+<!--									   aria-label="Previous"-->
+<!--									   title="Previous" rel="tooltip">-->
+<!--										<span aria-hidden="true" data-feather="chevrons-left" width="20" height="20">&laquo;</span>-->
+<!--									</a>-->
+<!--								</li>-->
+<!--								<li class="page-item" th:classappend="${i eq users.getNumber() + 1} ? 'active'"-->
+<!--									th:each="i : ${#numbers.sequence( (users.getNumber()+1 >= users.getTotalPages() - 10 ? users.getTotalPages() - 9 : users.getNumber() + 1), (users.getTotalPages() > 10 + users.getNumber() ? users.getNumber() + 10 : users.getTotalPages()), 1)}">-->
+<!--									<a class="page-link" th:href="@{/web/users(size=${users.getSize()}, page=${i - 1})}" th:text="${i}"-->
+<!--									   rel="tooltip"></a>-->
+<!--								</li>-->
+<!--								<li class="page-item" th:classappend="${users.getNumber() + 10 ge users.getTotalPages()} ? 'disabled'">-->
+<!--									<a class="page-link svg-icon" th:href="@{/web/users/(size=${users.getSize()}, page=${users.getNumber() + 10})}"-->
+<!--									   aria-label="Next"-->
+<!--									   title="Next" rel="tooltip">-->
+<!--										<span aria-hidden="true" data-feather="chevrons-right" width="20" height="20">&raquo;</span>-->
+<!--									</a>-->
+<!--								</li>-->
+<!--							</ul>-->
+<!--						</nav>-->
 					</div>
 				</div>
 			</div>

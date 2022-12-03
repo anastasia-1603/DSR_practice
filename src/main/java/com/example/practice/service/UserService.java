@@ -18,7 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
@@ -94,9 +93,7 @@ public class UserService {
 
     public Page<UserDto> getPageUsers(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
-        Page<UserDto> usersDtoPages = userRepository.findAll(pageable).map(user -> new UserDto(user.getId(),
-                user.getSurname(), user.getName(), user.getPatronymic(), user.getEmail()));
-        return usersDtoPages;
+        return userRepository.findAll(pageable).map(userMapper::toDto);
     }
 
     public Integer getTotalPages(int page, int size) {

@@ -3,9 +3,7 @@ package com.example.practice.mapper;
 
 import com.example.practice.dto.CategoryDto;
 import com.example.practice.dto.CategoryViewDto;
-import com.example.practice.dto.NewItemDto;
 import com.example.practice.entity.Category;
-import com.example.practice.entity.Item;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

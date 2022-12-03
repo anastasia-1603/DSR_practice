@@ -1,7 +1,6 @@
 package com.example.practice.service;
 
 import com.example.practice.dto.ItemDto;
-import com.example.practice.dto.PossessionDto;
 import com.example.practice.entity.ArchivePossession;
 import com.example.practice.entity.Item;
 import com.example.practice.entity.Possession;

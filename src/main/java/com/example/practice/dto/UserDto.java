@@ -1,11 +1,15 @@
 package com.example.practice.dto;
 
-import com.example.practice.validator.*;
+import com.example.practice.validator.New;
+import com.example.practice.validator.Update;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 @Data
 @AllArgsConstructor

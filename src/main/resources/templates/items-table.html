@@ -16,7 +16,7 @@
 					</tr>
 					</thead>
 					<tbody>
-					<tr th:each="item : ${items}">
+					<tr th:each="item : ${items.getContent()}">
 						<td th:text="${item.getName()}"></td>
 						<td class="descr" th:text="${item.getDescription()}"></td>
 						<td><img

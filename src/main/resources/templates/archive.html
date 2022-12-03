@@ -48,32 +48,8 @@
 							</tr>
 							</tbody>
 						</table>
-						
-						<nav aria-label="Pagination" th:if="${archive.getTotalPages() gt 1}">
-							<ul class="pagination justify-content-center font-weight-medium">
-								<li class="page-item" th:classappend="${archive.getNumber() eq 0} ? 'disabled'">
-									<a class="page-link svg-icon"
-									   th:href="@{/web/archive(size=${archive.getSize()},
-									   page=${archive.getNumber() lt 10 ? 0 : archive.getNumber()-10})}"
-									   aria-label="Previous"
-									   title="Previous" rel="tooltip">
-										<span aria-hidden="true" data-feather="chevrons-left" width="20" height="20">&laquo;</span>
-									</a>
-								</li>
-								<li class="page-item" th:classappend="${i eq archive.getNumber() + 1} ? 'active'"
-									th:each="i : ${#numbers.sequence( (archive.getNumber()+1 >= archive.getTotalPages() - 10 ? archive.getTotalPages() - 9 : archive.getNumber() + 1), (archive.getTotalPages() > 10 + archive.getNumber() ? archive.getNumber() + 10 : archive.getTotalPages()), 1)}">
-									<a class="page-link" th:href="@{/web/archive(size=${archive.getSize()}, page=${i - 1})}" th:text="${i}"
-									   rel="tooltip"></a>
-								</li>
-								<li class="page-item" th:classappend="${archive.getNumber() + 10 ge archive.getTotalPages()} ? 'disabled'">
-									<a class="page-link svg-icon" th:href="@{/web/archive/(size=${archive.getSize()}, page=${archive.getNumber() + 10})}"
-									   aria-label="Next"
-									   title="Next" rel="tooltip">
-										<span aria-hidden="true" data-feather="chevrons-right" width="20" height="20">&raquo;</span>
-									</a>
-								</li>
-							</ul>
-						</nav>
+						<div th:replace="fragments/pagination.html :: pagination (${archive}, ${url})"></div>
+
 					</div>
 				</div>
 			</div>

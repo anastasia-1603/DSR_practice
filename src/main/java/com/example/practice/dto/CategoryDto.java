@@ -1,6 +1,5 @@
 package com.example.practice.dto;
 
-import com.example.practice.entity.Item;
 import com.example.practice.validator.New;
 import com.example.practice.validator.Update;
 import lombok.AllArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
-import java.util.List;
 
 @Data
 @AllArgsConstructor

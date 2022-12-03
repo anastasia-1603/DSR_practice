@@ -1,7 +1,6 @@
 package com.example.practice.service;
 
 import com.example.practice.dto.ArchivePossessionDto;
-import com.example.practice.dto.UserDto;
 import com.example.practice.mapper.ArchivePossessionMapper;
 import com.example.practice.repository.ArchivePossessionRepository;
 import lombok.RequiredArgsConstructor;
