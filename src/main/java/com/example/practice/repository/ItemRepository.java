@@ -16,6 +16,14 @@ public interface ItemRepository extends JpaRepository<Item, Long>, JpaSpecificat
 
     List<Item> findAllByCategory(Category category);
 
+    List<Item> findAllByCategoryIn(List<Category> categories);
+
+    Page<Item> findAllByCategoryIn(List<Category> categories, Pageable pageable);
+
+    Page<Item> findAllByCategory(Category category, Pageable pageable);
+
+
+
     @Override
     @EntityGraph(attributePaths = {"category", "user"})
     @NonNull

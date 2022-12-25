@@ -46,7 +46,7 @@ public class ItemService {
         } else {
             String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             String uploadDir = "src/main/resources/static/img";
-            FileUtil.saveFile(uploadDir, filename, multipartFile);
+            FileUtil.saveFile(uploadDir, filename, multipartFile); //todo разобраться мб можно упростить
             item.setImage(filename);
         }
     }
@@ -82,15 +82,16 @@ public class ItemService {
     }
 
     public List<ItemDto> getAllItemsByCategory(Category category) {
-
         List<Category> childCategories = categoryService.getChildCategories(category.getId());
-
-        List<Item> items = new ArrayList<>();
-
-        for (Category c : childCategories) {
-            items.addAll(itemRepository.findAllByCategory(c));
-        }
+        List<Item> items = itemRepository.findAllByCategoryIn(childCategories);
         return itemMapper.toDto(items);
+    }
+
+    public Page<ItemDto> getAllItemsByCategoryPaginated(Long categoryId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
+        List<Category> childCategories = categoryService.getChildCategories(categoryId);
+        Page<Item> items = itemRepository.findAllByCategoryIn(childCategories, pageable);
+        return items.map(itemMapper::toDto);
     }
 
     public void updateItem(NewItemDto itemDto) {

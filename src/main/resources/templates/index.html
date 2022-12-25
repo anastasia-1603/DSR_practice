@@ -18,20 +18,22 @@
 <body>
 <div class="container">
 	<div class="header"><h1>Система учета вещей</h1></div>
-	<div class="navbar">
+	<div class="navbar navbar-expand-lg bg-body-tertiary">
 		<div class="nav">
-			<a th:href="@{'/web/items/'}">Вещи</a>
-			<a th:href="@{'/web/users/'}">Пользователи</a>
-			<a th:href="@{'/web/archive/'}">Архив</a>
+			<a class="nav-link" th:href="@{'/web/items/'}">Вещи</a>
+			<a class="nav-link" th:href="@{'/web/users/'}">Пользователи</a>
+			<a class="nav-link" th:href="@{'/web/archive/'}">Архив</a>
 		</div>
-		<div class="sort">
-			<p>Сортировать по:</p>
-			<a href="#">Названию</a>
-			<a href="#">Владельцу</a>
+		<div class="nav-item">
+			<div>Сортировать по:</div>
+			<a href="#" class="nav-link">Названию</a>
+			<a href="#" class="nav-link">Владельцу</a>
 		</div>
-		<div class="search">
-			<img src="/img/search.png" width="18" height="18">
-			<p>искать</p>
+		<div>
+			<form class="d-flex" role="search">
+				<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+				<button class="btn btn-outline-success" type="submit">Search</button>
+			</form>
 		</div>
 	</div>
 	<div class="content">
@@ -51,11 +53,38 @@
 		</div>
 		<div>
 			<p><a href="/web/items/create">Добавить вещь</a></p>
-			<div th:insert="items-table :: items (${items})"></div>
+			<div class="table">
+				<div th:switch="${items}">
+					<h2 th:case="null">No items found!</h2>
+					<div th:case="*">
+						<table>
+							<thead>
+							<tr>
+								<th>Name</th>
+								<th>Descr</th>
+								<th>Image</th>
+								<th>Category</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr th:each="item : ${items.getContent()}">
+								<td th:text="${item.getName()}"></td>
+								<td class="descr" th:text="${item.getDescription()}"></td>
+								<td><img
+										th:src="@{${'/img/' + (item.getImage() != null ? item.getImage() : 'img_placeholder.png')}}"
+										width="50px"></td>
+								<td th:text="${item.getCategory().getName()}"></td>
+								<td><a th:href="@{'/web/items/update/' + ${item.getId()}}">update</a></td>
+								<td><a th:href="@{'/web/items/delete/' + ${item.getId()}}">delete</a></td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div th:replace="fragments/pagination.html :: pagination (${items}, ${url})">
-
-	</div>
+<!--		<div th:replace="fragments/pagination.html :: pagination (${items}, ${url})"></div>-->
+</div>
 </div>
 </body>
 

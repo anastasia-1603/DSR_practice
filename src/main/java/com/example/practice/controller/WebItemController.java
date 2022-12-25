@@ -3,7 +3,6 @@ package com.example.practice.controller;
 import com.example.practice.dto.CategoryViewDto;
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.NewItemDto;
-import com.example.practice.dto.UserDto;
 import com.example.practice.service.CategoryService;
 import com.example.practice.service.ItemCategoryService;
 import com.example.practice.service.ItemService;
@@ -40,8 +39,11 @@ public class   WebItemController {
     }
 
     @GetMapping("/web/items/category/{categoryId}")
-    public String getItemsByCategory(@PathVariable Long categoryId, Model model) {
-        List<ItemDto> items = itemCategoryService.getAllItemsByCategoryId(categoryId);
+    public String getItemsByCategory(Model model,
+                                     @PathVariable Long categoryId,
+                                     @RequestParam(defaultValue = "0", name = "page") int page,
+                                     @RequestParam(defaultValue = "20", name = "size") int size) {
+        Page<ItemDto> items = itemService.getAllItemsByCategoryPaginated(categoryId, page, size);
         List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
         String url = "/web/items/category/"+categoryId;
         model.addAttribute("items", items);
