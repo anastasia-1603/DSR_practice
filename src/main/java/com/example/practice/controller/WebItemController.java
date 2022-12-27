@@ -100,13 +100,6 @@ public class WebItemController {
         return "redirect:/web/items?categoryId=" + categoryId;
     }
 
-//    @GetMapping("/web/items/search")
-//    public String getItem(Model model, @RequestParam String name) {
-//        List<ItemDto> items = itemService.getItemByName(name);
-//        model.addAttribute(items);
-//
-//    }
-
     @GetMapping("/web/items/search")
     public String getItem(Model model, @RequestParam String keyword) {
         List<ItemDto> items = itemService.getItemByKeyword(keyword);
@@ -114,6 +107,20 @@ public class WebItemController {
         model.addAttribute("items", items);
         model.addAttribute("categories", categories);
         return "search-result";
+    }
+
+
+    @GetMapping("/web/items/sort")  // todo сделать сортировку и фильтрацию
+    public String sort(Model model,
+                       @RequestParam(defaultValue = "0", name = "page") int page,
+                       @RequestParam(defaultValue = "100", name = "size") int size,
+                       @RequestParam(defaultValue = "-1", name = "categoryId") Long categoryId) {
+        Page<ItemDto> items = itemService.getAllItemsByCategoryPaginated(categoryId, page, size);
+        List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
+        model.addAttribute("items", items);
+        model.addAttribute("categories", categories);
+        model.addAttribute("categoryId", categoryId);
+        return "index";
     }
 
 }

@@ -25,11 +25,15 @@
 			<a class="nav-link" th:href="@{'/web/users/'}">Пользователи</a>
 			<a class="nav-link" th:href="@{'/web/archive/'}">Архив</a>
 		</div>
-		<div class="nav-item">
+		<div>
 			<div>Сортировать по:</div>
 			<a href="#" class="nav-link">Названию</a>
 			<a href="#" class="nav-link">Владельцу</a>
+			<div>Фильтры:</div>
+			<a href="#" class="nav-link">Название</a>
+			<a href="#" class="nav-link">Владелец</a>
 		</div>
+
 		<div>
 			<form class="d-flex" role="search" th:action="@{/web/items/search}">
 				<input class="form-control me-2" name="keyword" type="search" placeholder="Search" aria-label="Search">
@@ -76,69 +80,6 @@
 					</div>
 				</div>
 			</div>
-
-
-<!--			<div class="album bg-light">-->
-<!--				<div class="container" th:each="item : ${items.getContent()}">-->
-<!--					<div class="row">-->
-<!--						<div>-->
-<!--							<div class="card box-shadow">-->
-<!--								<img th:src="@{${'/img/' + (item.getImage() != null ? item.getImage() : 'img_placeholder.png')}}"-->
-<!--									 width="30px"-->
-<!--									 class="card-img-top"-->
-<!--									 data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail"-->
-<!--									 alt="Card image cap">-->
-<!--								<div class="card-body">-->
-<!--									<h5 th:text="${item.getName()}"></h5>-->
-<!--									<p class="card-text" th:text="${item.getDescription()}"></p>-->
-<!--									<div class="d-flex justify-content-between align-items-center">-->
-<!--										<div class="btn-group">-->
-<!--											<button th:href="@{'/web/items/update/' + ${item.getId()}}" type="button"-->
-<!--													class="btn btn-sm btn-outline-secondary">Edit-->
-<!--											</button>-->
-<!--											<button th:href="@{'/web/items/delete/' + ${item.getId()}}" type="button"-->
-<!--													class="btn btn-sm btn-outline-secondary">Delete-->
-<!--											</button>-->
-<!--										</div>-->
-<!--										<small class="text-muted" th:text="${item.getCategory().getName()}"></small>-->
-<!--									</div>-->
-<!--								</div>-->
-<!--							</div>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--				</div>-->
-<!--			</div>-->
-
-			<!--			<div class="table">-->
-			<!--				<div th:switch="${items}">-->
-			<!--					<h2 th:case="null">No items found!</h2>-->
-			<!--					<div th:case="*">-->
-			<!--						<table>-->
-			<!--							<thead>-->
-			<!--							<tr>-->
-			<!--								<th>Name</th>-->
-			<!--								<th>Descr</th>-->
-			<!--								<th>Image</th>-->
-			<!--								<th>Category</th>-->
-			<!--							</tr>-->
-			<!--							</thead>-->
-			<!--							<tbody>-->
-			<!--							<tr th:each="item : ${items.getContent()}">-->
-			<!--								<td th:text="${item.getName()}"></td>-->
-			<!--								<td class="descr" th:text="${item.getDescription()}"></td>-->
-			<!--								<td><img-->
-			<!--										th:src="@{${'/img/' + (item.getImage() != null ? item.getImage() : 'img_placeholder.png')}}"-->
-			<!--										width="50px"></td>-->
-			<!--								<td th:text="${item.getCategory().getName()}"></td>-->
-			<!--								<td><a th:href="@{'/web/items/update/' + ${item.getId()}}">update</a></td>-->
-			<!--								<td><a th:href="@{'/web/items/delete/' + ${item.getId()}}">delete</a></td>-->
-			<!--								&lt;!&ndash;								<td><a th:href="@{'/web/items/delete/' + ${item.getId()} + '?category=' + ${category}}">delete</a></td>&ndash;&gt;-->
-			<!--							</tr>-->
-			<!--							</tbody>-->
-			<!--						</table>-->
-			<!--					</div>-->
-			<!--				</div>-->
-			<!--			</div>-->
 		</div>
 		<!--		<div th:replace="fragments/pagination.html :: pagination (${items}, ${url})"></div>-->
 	</div>
