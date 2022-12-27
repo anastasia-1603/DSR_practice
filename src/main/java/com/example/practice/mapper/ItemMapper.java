@@ -2,6 +2,7 @@ package com.example.practice.mapper;
 
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.NewItemDto;
+import com.example.practice.dto.SearchItemDto;
 import com.example.practice.entity.Category;
 import com.example.practice.entity.Item;
 import org.mapstruct.Mapper;
@@ -35,4 +36,15 @@ public interface ItemMapper {
     @Mapping(source = "item.category.name", target = "categoryName")
     @Mapping(source = "item.code", target = "code")
     NewItemDto toNewItemDto(Item item);
+
+    @Mapping(source = "item.id", target = "id")
+    @Mapping(source = "item.name", target = "name")
+    @Mapping(source = "item.image", target = "image")
+    @Mapping(source = "item.description", target = "description")
+    @Mapping(source = "item.category.name", target = "categoryName")
+    @Mapping(source = "item.code", target = "code")
+    SearchItemDto toSearchItemDto(Item item);
+
+    List<SearchItemDto> toSearchItemDto(List<Item> items);
+
 }

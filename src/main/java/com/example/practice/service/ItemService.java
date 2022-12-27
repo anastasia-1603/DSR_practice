@@ -1,9 +1,6 @@
 package com.example.practice.service;
 
-import com.example.practice.dto.ItemDto;
-import com.example.practice.dto.NewItemDto;
-import com.example.practice.dto.PageFilterSortItemDto;
-import com.example.practice.dto.UserDto;
+import com.example.practice.dto.*;
 import com.example.practice.entity.Category;
 import com.example.practice.entity.Item;
 import com.example.practice.exceptions.ItemNotFoundException;
@@ -38,11 +35,27 @@ public class ItemService {
                 categoryService.getCategoryByName(itemDto.getCategoryName())));
     }
 
+//    public List<SearchItemDto> getItemByKeyword(String keyword) {
+//        if (keyword != null) {
+//            return itemMapper.toSearchItemDto(itemRepository.findByKeyword(keyword));
+//        } else {
+//            return itemMapper.toSearchItemDto(itemRepository.findAll());
+//        }
+//    }
+
+    public List<ItemDto> getItemByKeyword(String keyword) {
+        if (keyword != null && !keyword.equals("")) {
+            return itemMapper.toDto(itemRepository.findAllByNameContainingIgnoreCase(keyword));
+        } else {
+            return itemMapper.toDto(itemRepository.findAll());
+        }
+    }
+
     public Long getCategoryIdOfItem(Long itemId) {
         return getItemById(itemId).getCategory().getId();
     }
 
-    private void setImageToItem(Long itemId, MultipartFile multipartFile){
+    private void setImageToItem(Long itemId, MultipartFile multipartFile) {
         Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
 
         if (multipartFile == null || multipartFile.isEmpty()) {

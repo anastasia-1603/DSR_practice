@@ -3,6 +3,7 @@ package com.example.practice.controller;
 import com.example.practice.dto.CategoryViewDto;
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.NewItemDto;
+import com.example.practice.dto.SearchItemDto;
 import com.example.practice.service.CategoryService;
 import com.example.practice.service.ItemCategoryService;
 import com.example.practice.service.ItemService;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class   WebItemController {
+public class WebItemController {
 
     private final ItemService itemService;
     private final CategoryService categoryService;
@@ -65,8 +66,8 @@ public class   WebItemController {
 
     @PostMapping("/web/items/create")
     public String createItemSubmit(@RequestParam String name, @RequestParam String description,
-                             @RequestParam String categoryName, @RequestParam("image") MultipartFile multipartFile,
-                             @RequestParam Long code) {
+                                   @RequestParam String categoryName, @RequestParam("image") MultipartFile multipartFile,
+                                   @RequestParam Long code) {
         itemService.createItem(name, description, categoryName, multipartFile, code);
         return "redirect:/web";
     }
@@ -89,51 +90,30 @@ public class   WebItemController {
                                    @RequestParam Long code) {
         itemService.updateItem(itemId, name, description, categoryName, multipartFile, code);
         Long categoryId = itemService.getCategoryIdOfItem(itemId);
-        return "redirect:/web/items?categoryId="+categoryId;
+        return "redirect:/web/items?categoryId=" + categoryId;
     }
 
     @GetMapping("/web/items/delete/{itemId}")
     public String deleteItem(@PathVariable Long itemId) {
         Long categoryId = itemService.getCategoryIdOfItem(itemId);
         itemService.deleteItem(itemId);
-        return "redirect:/web/items?categoryId="+categoryId;
+        return "redirect:/web/items?categoryId=" + categoryId;
     }
 
+//    @GetMapping("/web/items/search")
+//    public String getItem(Model model, @RequestParam String name) {
+//        List<ItemDto> items = itemService.getItemByName(name);
+//        model.addAttribute(items);
+//
+//    }
 
-//    @GetMapping("/web/items/update")
-//    public String updateItemPage(Model model,
-//                                 @RequestParam Long itemId,
-//                                 @RequestParam Long categoryId) {
-//        NewItemDto item = itemService.getNewItemDtoById(itemId);
-//        List<String> categories = categoryService.getNamesOfAllCategories();
-//        model.addAttribute("item", item);
-//        model.addAttribute("categories", categories);
-//        model.addAttribute("categoryId", categoryId);
-//
-//        return "update-item";
-//    }
-//
-//    @PostMapping("/web/items/update")
-//    public String updateItemSubmit(@RequestParam Long itemId,
-//                                   @RequestParam String name,
-//                                   @RequestParam String description,
-//                                   @RequestParam String categoryName,
-//                                   @RequestParam("image") MultipartFile multipartFile,
-//                                   @RequestParam Long code,
-//                                   @RequestParam Long categoryId,
-//                                   RedirectAttributes rd) {
-//        itemService.updateItem(itemId, name, description, categoryName, multipartFile, code);
-//        rd.addAttribute("categoryId", categoryId);
-//        return "redirect:/web/items";
-//    }
-//
-//    @GetMapping("/web/items/delete")
-//    public String deleteItem(@RequestParam Long itemId,
-//                             @RequestParam Long categoryId,
-//                             RedirectAttributes rd) {
-//        itemService.deleteItem(itemId);
-//        rd.addAttribute("categoryId", categoryId);
-//        return "redirect:/web/items";
-//    }
+    @GetMapping("/web/items/search")
+    public String getItem(Model model, @RequestParam String keyword) {
+        List<ItemDto> items = itemService.getItemByKeyword(keyword);
+        List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
+        model.addAttribute("items", items);
+        model.addAttribute("categories", categories);
+        return "search-result";
+    }
 
 }
