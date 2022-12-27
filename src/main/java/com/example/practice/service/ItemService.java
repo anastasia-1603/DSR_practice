@@ -38,6 +38,10 @@ public class ItemService {
                 categoryService.getCategoryByName(itemDto.getCategoryName())));
     }
 
+    public Long getCategoryIdOfItem(Long itemId) {
+        return getItemById(itemId).getCategory().getId();
+    }
+
     private void setImageToItem(Long itemId, MultipartFile multipartFile){
         Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
 
@@ -89,6 +93,9 @@ public class ItemService {
 
     public Page<ItemDto> getAllItemsByCategoryPaginated(Long categoryId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
+        if (categoryId == null || categoryId == -1) {
+            return itemRepository.findAll(pageable).map(itemMapper::toDto);
+        }
         List<Category> childCategories = categoryService.getChildCategories(categoryId);
         Page<Item> items = itemRepository.findAllByCategoryIn(childCategories, pageable);
         return items.map(itemMapper::toDto);

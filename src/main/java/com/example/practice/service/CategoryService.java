@@ -88,6 +88,9 @@ public class CategoryService {
     }
 
     public List<Category> getChildCategories(Long id) {
+        if (!categoryRepository.existsById(id)) {
+            throw new CategoryNotFoundException();
+        }
         return categoryRepository.getChildCategories(id);
     }
 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -29,29 +30,29 @@ public class   WebItemController {
     @GetMapping({"/web/items", "/web"})
     public String home(Model model,
                        @RequestParam(defaultValue = "0", name = "page") int page,
-                       @RequestParam(defaultValue = "20", name = "size") int size) {
-        Page<ItemDto> items = itemService.getPageItems(page, size);
-        List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
-        model.addAttribute("items", items);
-        model.addAttribute("categories", categories);
-        model.addAttribute("url", "/web/items");
-        return "index";
-    }
-
-    @GetMapping("/web/items/category/{categoryId}")
-    public String getItemsByCategory(Model model,
-                                     @PathVariable Long categoryId,
-                                     @RequestParam(defaultValue = "0", name = "page") int page,
-                                     @RequestParam(defaultValue = "20", name = "size") int size) {
+                       @RequestParam(defaultValue = "100", name = "size") int size,
+                       @RequestParam(defaultValue = "-1", name = "categoryId") Long categoryId) {
         Page<ItemDto> items = itemService.getAllItemsByCategoryPaginated(categoryId, page, size);
         List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
-        String url = "/web/items/category/"+categoryId;
         model.addAttribute("items", items);
         model.addAttribute("categories", categories);
-        model.addAttribute("url", url);
-
+        model.addAttribute("categoryId", categoryId);
         return "index";
     }
+
+//    @GetMapping("/web/items/category/{categoryId}")
+//    public String getItemsByCategory(Model model,
+//                                     @PathVariable Long categoryId,
+//                                     @RequestParam(defaultValue = "0", name = "page") int page,
+//                                     @RequestParam(defaultValue = "20", name = "size") int size) {
+//        Page<ItemDto> items = itemService.getAllItemsByCategoryPaginated(categoryId, page, size);
+//        List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
+//        String url = "/web/items/category/"+categoryId;
+//        model.addAttribute("items", items);
+//        model.addAttribute("categories", categories);
+//        model.addAttribute("url", url);
+//        return "index";
+//    }
 
     @GetMapping("/web/items/create")
     public String createItemPage(Model model) {
@@ -70,7 +71,7 @@ public class   WebItemController {
         return "redirect:/web";
     }
 
-    @GetMapping("/web/items/update/{itemId}") // todo разобраться как сделать ссылку
+    @GetMapping("/web/items/update/{itemId}")
     public String updateItemPage(Model model, @PathVariable Long itemId) {
         NewItemDto item = itemService.getNewItemDtoById(itemId);
         List<String> categories = categoryService.getNamesOfAllCategories();
@@ -87,14 +88,52 @@ public class   WebItemController {
                                    @RequestParam("image") MultipartFile multipartFile,
                                    @RequestParam Long code) {
         itemService.updateItem(itemId, name, description, categoryName, multipartFile, code);
-        return "redirect:/web";
+        Long categoryId = itemService.getCategoryIdOfItem(itemId);
+        return "redirect:/web/items?categoryId="+categoryId;
     }
 
     @GetMapping("/web/items/delete/{itemId}")
-    public String deleteItem(@PathVariable Long itemId,
-                             @RequestParam String url) {
+    public String deleteItem(@PathVariable Long itemId) {
+        Long categoryId = itemService.getCategoryIdOfItem(itemId);
         itemService.deleteItem(itemId);
-        return "redirect:/web/items/";
+        return "redirect:/web/items?categoryId="+categoryId;
     }
+
+
+//    @GetMapping("/web/items/update")
+//    public String updateItemPage(Model model,
+//                                 @RequestParam Long itemId,
+//                                 @RequestParam Long categoryId) {
+//        NewItemDto item = itemService.getNewItemDtoById(itemId);
+//        List<String> categories = categoryService.getNamesOfAllCategories();
+//        model.addAttribute("item", item);
+//        model.addAttribute("categories", categories);
+//        model.addAttribute("categoryId", categoryId);
+//
+//        return "update-item";
+//    }
+//
+//    @PostMapping("/web/items/update")
+//    public String updateItemSubmit(@RequestParam Long itemId,
+//                                   @RequestParam String name,
+//                                   @RequestParam String description,
+//                                   @RequestParam String categoryName,
+//                                   @RequestParam("image") MultipartFile multipartFile,
+//                                   @RequestParam Long code,
+//                                   @RequestParam Long categoryId,
+//                                   RedirectAttributes rd) {
+//        itemService.updateItem(itemId, name, description, categoryName, multipartFile, code);
+//        rd.addAttribute("categoryId", categoryId);
+//        return "redirect:/web/items";
+//    }
+//
+//    @GetMapping("/web/items/delete")
+//    public String deleteItem(@RequestParam Long itemId,
+//                             @RequestParam Long categoryId,
+//                             RedirectAttributes rd) {
+//        itemService.deleteItem(itemId);
+//        rd.addAttribute("categoryId", categoryId);
+//        return "redirect:/web/items";
+//    }
 
 }

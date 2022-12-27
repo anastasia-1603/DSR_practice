@@ -44,7 +44,7 @@
 					<table>
 						<tbody>
 						<tr th:each="category : ${categories}">
-							<td> <a th:href="@{'/web/items/category/' + ${category.getId()}}" th:text="${category.getName()}"></a></td>
+							<td> <a th:href="@{/web/items(categoryId=${category.getId()})}" th:text="${category.getName()}"></a></td>
 						</tr>
 						</tbody>
 					</table>
@@ -76,6 +76,7 @@
 								<td th:text="${item.getCategory().getName()}"></td>
 								<td><a th:href="@{'/web/items/update/' + ${item.getId()}}">update</a></td>
 								<td><a th:href="@{'/web/items/delete/' + ${item.getId()}}">delete</a></td>
+								<!--								<td><a th:href="@{'/web/items/delete/' + ${item.getId()} + '?category=' + ${category}}">delete</a></td>-->
 							</tr>
 							</tbody>
 						</table>
