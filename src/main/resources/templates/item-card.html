@@ -27,7 +27,8 @@
 					<a th:href="@{'/web/items/delete/' + ${item.getId()}}" class="btn">Delete</a>
 
 					<div th:if="${item.getUser() != null}">
-						<a th:href="@{'/web/user/' + ${item.getUser().getId()}}" class="btn">User</a>
+						<a th:href="@{'/web/users/' + ${item.getUser().getId()}}"
+						   th:text="${item.getUser().getName() +' '+ item.getUser().getSurname()+' '+item.getUser().getPatronymic()}" class="btn"></a>
 					</div>
 					<div th:unless="${item.getUser() != null}">
 						<p>No owner</p>
