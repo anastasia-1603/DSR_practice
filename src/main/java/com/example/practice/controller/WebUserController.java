@@ -71,8 +71,10 @@ public class WebUserController {
                          @PathVariable Long userId) {
         UserDto user = userService.getUserDtoById(userId);
         List<ItemDto> items = userItemService.getUserItems(userId);
+        List<ItemDto> freeItems = userItemService.getItemsWithoutOwner();
         model.addAttribute("user", user);
         model.addAttribute("items", items);
+        model.addAttribute("freeItems", freeItems);
         return "user-card";
     }
 
@@ -94,5 +96,12 @@ public class WebUserController {
                              @RequestParam(defaultValue = "10", name = "size") int size) {
         userService.deleteUser(userId);
         return "redirect:/web/users?size=" + size + "&page=" + page;
+    }
+
+    @PostMapping("/web/users/{userId}/add")
+    public String addItemToUser(@PathVariable Long userId,
+                                @RequestParam Long itemId) {
+        userItemService.addItemToUser(itemId, userId);
+        return "redirect:/web/users/" + userId;
     }
 }

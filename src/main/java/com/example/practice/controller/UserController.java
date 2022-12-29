@@ -52,7 +52,7 @@ public class UserController {
 
     @PostMapping("/{userId}/items/{itemId}")
     public ResponseEntity<Void> addItemToUser(@PathVariable("userId") Long userId, @PathVariable("itemId") Long itemId) {
-        userItemService.addItemToUser(userId, itemId);
+        userItemService.addItemToUser(itemId, userId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

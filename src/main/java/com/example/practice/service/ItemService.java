@@ -29,24 +29,15 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
     private final CategoryService categoryService;
-    private final PossessionService ps;
 
     public void createItem(NewItemDto itemDto) {
         itemRepository.save(itemMapper.fromDto(itemDto,
                 categoryService.getCategoryByName(itemDto.getCategoryName())));
     }
 
-    public void addToUser(Long itemId, Long userId) {
-        Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
-
-    }
-
-//    public List<SearchItemDto> getItemByKeyword(String keyword) {
-//        if (keyword != null) {
-//            return itemMapper.toSearchItemDto(itemRepository.findByKeyword(keyword));
-//        } else {
-//            return itemMapper.toSearchItemDto(itemRepository.findAll());
-//        }
+//    public void addToUser(Long itemId, Long userId) {
+//        Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
+//
 //    }
 
     public List<ItemDto> getItemByKeyword(String keyword) {

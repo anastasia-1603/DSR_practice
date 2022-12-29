@@ -27,17 +27,25 @@
 							<div class="col-6 col-sm-3" th:text="${user.getName()}"></div>
 							<div class="col-6 col-sm-3" th:text="${user.getSurname()}"></div>
 							<div class="col-6 col-sm-3" th:text="${user.getPatronymic()}"></div>
-
-							<div class="w-100"></div>
-
+						</div>
+						<div class="row">
 							<div th:if="${items != null and !items.isEmpty()}">
 								<div th:each="item : ${items}">
-									<a class="col-6 col-sm-3" th:text="item.getName()" th:href="@{'/web/items/' + ${item.getId()}}"></a>
+									<a th:text="${item.getName()}" th:href="@{'/web/items/' + ${item.getId()}}"></a>
 								</div>
 							</div>
 							<div th:unless="${items != null and !items.isEmpty()}">
 								<p>No items!</p>
 							</div>
+							<form th:action="@{'/web/users/' + ${user.getId()} +'/add'}" method="post">
+								<label for="itemId" class="form-label">Add item</label>
+								<select id="itemId" class="form-select" name="itemId">
+									<option th:each="i : ${freeItems}" th:value="${i.getId()}" th:text="${i.getName()}" />
+								</select>
+								<div class="col-12">
+									<button type="submit" class="btn btn-primary">Выбрать</button>
+								</div>
+							</form>
 
 						</div>
 					</div>

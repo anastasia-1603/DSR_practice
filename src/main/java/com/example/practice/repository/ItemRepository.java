@@ -26,6 +26,8 @@ public interface ItemRepository extends JpaRepository<Item, Long>, JpaSpecificat
 
     List<Item> findAllByName(String name);
 
+//    Item findById(Long id);
+
     @Override
     @EntityGraph(attributePaths = {"category", "user"})
     @NonNull
