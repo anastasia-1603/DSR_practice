@@ -37,7 +37,7 @@ public class UserItemService {
                 .toList();
     }
 
-    public void deleteUsersItem(Long userId, Long itemId) {
+    public void deleteUsersItem(Long itemId, Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new UserNotFoundException();
         }

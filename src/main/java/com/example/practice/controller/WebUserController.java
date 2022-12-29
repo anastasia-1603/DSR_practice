@@ -104,4 +104,11 @@ public class WebUserController {
         userItemService.addItemToUser(itemId, userId);
         return "redirect:/web/users/" + userId;
     }
+
+    @GetMapping("/web/users/{userId}/delete")
+    public String deleteItemFromUser(@PathVariable Long userId,
+                                     @RequestParam Long itemId) {
+        userItemService.deleteUsersItem(itemId, userId);
+        return "redirect:/web/users/" + userId;
+    }
 }
