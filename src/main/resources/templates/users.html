@@ -47,7 +47,7 @@
 								<td th:text="${user.getEmail()}"></td>
 								<td><a th:href="@{'/web/users/update/'+${user.getId()}+'?size='+${users.getSize()}+'&page='+${users.getNumber}}">update</a></td>
 								<td><a th:href="@{'/web/users/delete/'+${user.getId()}+'?size='+${users.getSize()}+'&page='+${users.getNumber}}">delete</a></td>
-								<td><a th:href="@{'/web/user/' + ${user.getId()} + '/items'}">items</a></td>
+								<td><a th:href="@{'/web/users/' + ${user.getId()}}">View</a></td>
 							</tr>
 							</tbody>
 						</table>

@@ -26,15 +26,20 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final ItemService itemService;
-    private final PossessionService possessionService;
+//    private final ItemService itemService;
+//    private final PossessionService possessionService;
     private final ItemRepository itemRepository;
+    private final UserItemService userItemService;
 
     public void createUser(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) {
             throw new UserEmailExistsException();
         }
         userRepository.save(userMapper.fromDto(userDto));
+    }
+
+    public boolean existsById(Long userId) {
+        return userRepository.existsById(userId);
     }
 
     public void createUser(String surname, String name, String patronymic, String email) {
@@ -49,8 +54,12 @@ public class UserService {
         userRepository.save(userMapper.fromDto(userDto));
     }
 
-    public UserDto getUserById(Long id) {
+    public UserDto getUserDtoById(Long id) {
         return userMapper.toDto(userRepository.findById(id).orElseThrow(UserNotFoundException::new));
+    }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     public void updateUser(UserDto userDto) {
@@ -105,32 +114,33 @@ public class UserService {
         return IntStream.rangeClosed(0, totalPages).boxed().toList();
     }
 
-    public void addItemToUser(Long userId, Long itemId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
 
-        possessionService.addPossession(user, item);
-    }
+//    public void addItemToUser(Long userId, Long itemId) {
+//        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+//        Item item = itemRepository.findById(itemId).orElseThrow(ItemNotFoundException::new);
+//
+//        userItemService.addItemToUser(userId, itemId);
+//    }
 
-    public List<ItemDto> getUserItems(Long userId) {
-        if (!userRepository.existsById(userId)) {
-            throw new UserNotFoundException();
-        }
-        return possessionService.getUserItems(userId);
-    }
+//    public List<ItemDto> getUserItems(Long userId) {
+//        if (!userRepository.existsById(userId)) {
+//            throw new UserNotFoundException();
+//        }
+//        return userI.getUserItems(userId);
+//    }
 
 //    public List<ItemDto> getAllItemsWithOwner() {
 //        return possessionService.
 //    }
 
-    public void deleteUsersItem(Long userId, Long itemId) {
-        if (!userRepository.existsById(userId)) {
-            throw new UserNotFoundException();
-        }
-        if (!itemService.existsById(itemId)) {
-            throw new ItemNotFoundException();
-        }
-        possessionService.deletePossession(userId, itemId);
-    }
+//    public void deleteUsersItem(Long userId, Long itemId) {
+//        if (!userRepository.existsById(userId)) {
+//            throw new UserNotFoundException();
+//        }
+//        if (!itemService.existsById(itemId)) {
+//            throw new ItemNotFoundException();
+//        }
+//        possessionService.deletePossession(userId, itemId);
+//    }
 
 }

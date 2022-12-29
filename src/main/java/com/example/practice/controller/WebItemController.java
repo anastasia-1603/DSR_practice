@@ -7,6 +7,7 @@ import com.example.practice.dto.SearchItemDto;
 import com.example.practice.service.CategoryService;
 import com.example.practice.service.ItemCategoryService;
 import com.example.practice.service.ItemService;
+import com.example.practice.service.UserItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class WebItemController {
     private final ItemService itemService;
     private final CategoryService categoryService;
     private final ItemCategoryService itemCategoryService;
+    private final UserItemService userItemService;
 
     @GetMapping({"/web/items", "/web"})
     public String home(Model model,
@@ -101,7 +103,7 @@ public class WebItemController {
     }
 
     @GetMapping("/web/items/search")
-    public String getItem(Model model, @RequestParam String keyword) {
+    public String searchItem(Model model, @RequestParam String keyword) {
         List<ItemDto> items = itemService.getItemByKeyword(keyword);
         List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
         model.addAttribute("items", items);
@@ -109,18 +111,36 @@ public class WebItemController {
         return "search-result";
     }
 
-
-    @GetMapping("/web/items/sort")  // todo сделать сортировку и фильтрацию
-    public String sort(Model model,
-                       @RequestParam(defaultValue = "0", name = "page") int page,
-                       @RequestParam(defaultValue = "100", name = "size") int size,
-                       @RequestParam(defaultValue = "-1", name = "categoryId") Long categoryId) {
-        Page<ItemDto> items = itemService.getAllItemsByCategoryPaginated(categoryId, page, size);
-        List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
-        model.addAttribute("items", items);
-        model.addAttribute("categories", categories);
-        model.addAttribute("categoryId", categoryId);
-        return "index";
+    @GetMapping("/web/items/{itemId}")
+    public String getItem(Model model, @PathVariable Long itemId) {
+        System.out.println("getItem");
+        ItemDto item = itemService.getItemDtoById(itemId);
+        System.out.println(item.getName());
+        model.addAttribute("item", item);
+        return "item-card";
     }
+
+
+
+//    @GetMapping("/web/items/sort")  // todo сделать сортировку и фильтрацию
+//    public String sort(Model model,
+//                       @RequestParam(defaultValue = "0", name = "page") int page,
+//                       @RequestParam(defaultValue = "100", name = "size") int size,
+//                       @RequestParam(defaultValue = "-1", name = "categoryId") Long categoryId) {
+//        Page<ItemDto> items = itemService.getAllItemsByCategoryPaginated(categoryId, page, size);
+//        List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
+//        model.addAttribute("items", items);
+//        model.addAttribute("categories", categories);
+//        model.addAttribute("categoryId", categoryId);
+//        return "index";
+//    }
+
+//    @GetMapping("/web/items/{itemId}/add")
+//    public String addToUser(Model model,
+//                            @RequestParam Long userId,
+//                            @PathVariable Long itemId) {
+//        userItemService.addItemToUser(itemId, userId);
+//        return ""; //todo
+//    }
 
 }

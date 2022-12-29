@@ -2,6 +2,7 @@ package com.example.practice.controller;
 
 import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.UserDto;
+import com.example.practice.service.UserItemService;
 import com.example.practice.service.UserService;
 import com.example.practice.validator.New;
 import com.example.practice.validator.Update;
@@ -18,10 +19,11 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final UserItemService userItemService;
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+        return ResponseEntity.ok(userService.getUserDtoById(id));
     }
 
     @PostMapping
@@ -50,13 +52,13 @@ public class UserController {
 
     @PostMapping("/{userId}/items/{itemId}")
     public ResponseEntity<Void> addItemToUser(@PathVariable("userId") Long userId, @PathVariable("itemId") Long itemId) {
-        userService.addItemToUser(userId, itemId);
+        userItemService.addItemToUser(userId, itemId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{userId}/items")
     public ResponseEntity<List<ItemDto>> getUserItems(@PathVariable("userId") Long userId) {
-        return ResponseEntity.ok(userService.getUserItems(userId));
+        return ResponseEntity.ok(userItemService.getUserItems(userId));
     }
 
 //    @GetMapping("/items")
@@ -66,7 +68,7 @@ public class UserController {
 
     @DeleteMapping("/{userId}/items/{itemId}")
     public ResponseEntity<Void> deleteUsersItem(@PathVariable("userId") Long userId, @PathVariable("itemId") Long itemId) {
-        userService.deleteUsersItem(userId, itemId);
+        userItemService.deleteUsersItem(userId, itemId);
         return ResponseEntity.ok().build();
     }
 }

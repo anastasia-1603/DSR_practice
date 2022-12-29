@@ -60,25 +60,44 @@
 		<div>
 			<p><a href="/web/items/create">Добавить вещь</a></p>
 
-			<div class="table" th:each="item : ${items.getContent()}">
-				<div class="card" style="width: 18rem;">
-					<img class="card-img-top"
-						 th:src="@{${'/img/' + item.getImage()}}"
-						 alt="Card image cap">
-					<div class="card-body">
-						<h5 class="card-title" th:text="${item.getName()}"></h5>
-						<p class="card-text" th:text="${item.getDescription()}"></p>
-						<div class="btn-group">
-							<a th:href="@{'/web/items/update/' + ${item.getId()}}" type="button"
-									class="btn btn-sm btn-outline-secondary">Edit
-							</a>
-							<a th:href="@{'/web/items/delete/' + ${item.getId()}}" type="button"
-									class="btn btn-sm btn-outline-secondary">Delete
-							</a>
+			<div th:each="item : ${items.getContent()}">
+				<div class="row mb-2">
+					<div class="col-md-6">
+						<div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+							<div class="col-auto d-none d-lg-block">
+								<img class="card-img-top"
+									 th:src="@{${'/img/' + (item.getImage() != null ? item.getImage() : 'img_placeholder.png')}}"
+									 alt="item image"/>
+							</div>
+							<div class="col p-4 d-flex flex-column position-static">
+								<h3 class="mb-0" th:text="${item.getName()}"></h3>
+								<div class="mb-1 text-muted" th:text="${item.getCategory().getName()}"></div>
+								<p class="card-text mb-auto" th:text="${item.getDescription()}"></p>
+								<a th:href="@{'/web/items/update/' + ${item.getId()}}" type="button" class="btn">Update</a>
+								<a th:href="@{'/web/items/delete/' + ${item.getId()}}" type="button" class="btn">Delete</a>
+								<a th:href="@{'/web/items/' + ${item.getId()}}" type="button" class="btn">View</a>
+<!--								<a th:href="@{'/web/items/user/' + ${item.getUser().getId()}}" class="stretched-link">User</a>-->
+							</div>
+
 						</div>
-						<small class="text-muted" th:text="${item.getCategory().getName()}"></small>
 					</div>
-				</div>
+			</div>
+
+
+<!--			<div th:each="item : ${items.getContent()}">-->
+<!--				<div class="card">-->
+<!--					<img class="card-img-top" width="25"-->
+<!--						 th:src="@{${'/img/' + item.getImage()}}"-->
+<!--						 alt="Card image cap">-->
+<!--					<div class="card-body">-->
+<!--						<h5 class="card-title" th:text="${item.getName()}"></h5>-->
+<!--						<p class="card-text" th:text="${item.getDescription()}"></p>-->
+<!--						<a th:href="@{'/web/items/update/' + ${item.getId()}}" type="button" class="btn">Edit</a>-->
+<!--						<a th:href="@{'/web/items/delete/' + ${item.getId()}}" type="button" class="btn">Delete</a>-->
+<!--						<a th:href="@{'/web/items/' + ${item.getId()}}" type="button" class="btn">View</a>-->
+<!--						<small class="text-muted" th:text="${item.getCategory().getName()}"></small>-->
+<!--					</div>-->
+<!--				</div>-->
 			</div>
 		</div>
 		<!--		<div th:replace="fragments/pagination.html :: pagination (${items}, ${url})"></div>-->

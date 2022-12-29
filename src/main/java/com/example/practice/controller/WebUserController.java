@@ -1,6 +1,8 @@
 package com.example.practice.controller;
 
+import com.example.practice.dto.ItemDto;
 import com.example.practice.dto.UserDto;
+import com.example.practice.service.UserItemService;
 import com.example.practice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,11 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class WebUserController {
 
     private final UserService userService;
+    private final UserItemService userItemService;
 
     @GetMapping("/web/users")
     public String getAllUsersPaginated(Model model,
@@ -33,12 +38,12 @@ public class WebUserController {
         return "create-user";
     }
 
-    @GetMapping("/web/users/test")
-    public void testPage() {
-        Page<UserDto> users = userService.getPageUsers(0, 10);
-        users.getContent();
-        users.getContent().get(0);
-    }
+//    @GetMapping("/web/users/test")
+//    public void testPage() {
+//        Page<UserDto> users = userService.getPageUsers(0, 10);
+//        users.getContent();
+//        users.getContent().get(0);
+//    }
 
     @PostMapping("/web/users/create")
     public String createUserSubmit(@RequestParam String surname,
@@ -54,11 +59,21 @@ public class WebUserController {
                                  @PathVariable Long userId,
                                  @RequestParam(defaultValue = "0", name = "page") int page,
                                  @RequestParam(defaultValue = "10", name = "size") int size) {
-        UserDto user = userService.getUserById(userId);
+        UserDto user = userService.getUserDtoById(userId);
         model.addAttribute("user", user);
         model.addAttribute("page", page);
         model.addAttribute("size", size);
         return "update-user";
+    }
+
+    @GetMapping("/web/users/{userId}")
+    public String getUser(Model model,
+                         @PathVariable Long userId) {
+        UserDto user = userService.getUserDtoById(userId);
+        List<ItemDto> items = userItemService.getUserItems(userId);
+        model.addAttribute("user", user);
+        model.addAttribute("items", items);
+        return "user-card";
     }
 
     @PostMapping("/web/users/update/{userId}")

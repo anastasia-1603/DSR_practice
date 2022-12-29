@@ -1,6 +1,7 @@
 package com.example.practice.service;
 
 import com.example.practice.dto.ItemDto;
+import com.example.practice.dto.PossessionDto;
 import com.example.practice.entity.ArchivePossession;
 import com.example.practice.entity.Item;
 import com.example.practice.entity.Possession;
@@ -8,6 +9,7 @@ import com.example.practice.entity.User;
 import com.example.practice.exceptions.UsersItemExistsException;
 import com.example.practice.exceptions.UsersItemNotFoundException;
 import com.example.practice.mapper.ItemMapper;
+import com.example.practice.mapper.PossessionMapper;
 import com.example.practice.repository.ArchivePossessionRepository;
 import com.example.practice.repository.PossessionRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +25,7 @@ public class PossessionService {
 
     private final PossessionRepository possessionRepository;
     private final ArchivePossessionRepository archivePossessionRepository;
-    private final ItemMapper itemMapper;
+    private final PossessionMapper possessionMapper;
 
 
     public void addPossession(User user, Item item) {
@@ -39,11 +41,20 @@ public class PossessionService {
         }
     }
 
-    public List<ItemDto> getUserItems(Long userId) {
-        return itemMapper.toDto(possessionRepository.findByUserId(userId)
-                .stream()
-                .map(Possession::getItem)
-                .collect(Collectors.toList()));
+    public PossessionDto getPossessionsByItemId(Long itemId) {
+        Possession p = possessionRepository.findByItemId(itemId);
+        if (p == null) {
+            throw new UsersItemNotFoundException();
+        }
+        return possessionMapper.toDto(p);
+    }
+
+    public List<PossessionDto> getPossessionsByUserId(Long userId) {
+        List<Possession> p = possessionRepository.findByUserId(userId);
+        if (p == null) {
+            throw new UsersItemNotFoundException();
+        }
+        return possessionMapper.toDto(p);
     }
 
     public void deletePossession(Long userId, Long itemId) {

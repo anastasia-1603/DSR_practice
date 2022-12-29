@@ -35,7 +35,7 @@ public class User {
             name = "user_item",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
-    private List<Possession> items;
+    private List<Possession> possessions;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(

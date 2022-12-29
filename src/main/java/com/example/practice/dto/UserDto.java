@@ -10,6 +10,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -34,5 +35,5 @@ public class UserDto {
     @NotNull
     private String email;
 
-
+    private List<ItemDto> items;
 }
