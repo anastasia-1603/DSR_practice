@@ -34,12 +34,14 @@ public class WebItemController {
     public String home(Model model,
                        @RequestParam(defaultValue = "0", name = "page") int page,
                        @RequestParam(defaultValue = "100", name = "size") int size,
-                       @RequestParam(defaultValue = "-1", name = "categoryId") Long categoryId) {
-        Page<ItemDto> items = itemService.getAllItemsByCategoryPaginated(categoryId, page, size);
+                       @RequestParam(defaultValue = "-1", name = "categoryId") Long categoryId,
+                       @RequestParam(defaultValue = "id", name = "sort") String sort) {
+        Page<ItemDto> items = itemService.getAllItemsByCategoryPaginated(categoryId, page, size, sort);
         List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
         model.addAttribute("items", items);
         model.addAttribute("categories", categories);
         model.addAttribute("categoryId", categoryId);
+        model.addAttribute("sort", sort);
         return "index";
     }
 

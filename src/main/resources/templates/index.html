@@ -27,8 +27,7 @@
 		</div>
 		<div>
 			<div>Сортировать по:</div>
-			<a href="#" class="nav-link">Названию</a>
-			<a href="#" class="nav-link">Владельцу</a>
+			<a th:href="@{'/web/items?sort=name&categoryId='+${categoryId}}" class="nav-link">Названию</a>
 		</div>
 
 		<div>

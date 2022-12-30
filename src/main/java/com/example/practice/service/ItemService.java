@@ -120,8 +120,8 @@ public class ItemService {
         return getAllItemsByCategory(category);
     }
 
-    public Page<ItemDto> getAllItemsByCategoryPaginated(Long categoryId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
+    public Page<ItemDto> getAllItemsByCategoryPaginated(Long categoryId, int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         if (categoryId == null || categoryId == -1) {
             return itemRepository.findAll(pageable).map(itemMapper::toDto);
         }
