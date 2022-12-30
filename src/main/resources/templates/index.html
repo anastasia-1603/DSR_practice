@@ -29,14 +29,12 @@
 			<div>Сортировать по:</div>
 			<a href="#" class="nav-link">Названию</a>
 			<a href="#" class="nav-link">Владельцу</a>
-			<div>Фильтры:</div>
-			<a href="#" class="nav-link">Название</a>
-			<a href="#" class="nav-link">Владелец</a>
 		</div>
 
 		<div>
 			<form class="d-flex" role="search" th:action="@{/web/items/search}">
 				<input class="form-control me-2" name="keyword" type="search" placeholder="Search" aria-label="Search">
+				<input type="hidden" name="categoryId" th:value="${categoryId}">
 				<button class="btn btn-outline-success" type="submit">Search</button>
 			</form>
 		</div>

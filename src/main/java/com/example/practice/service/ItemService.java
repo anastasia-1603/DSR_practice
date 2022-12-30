@@ -18,9 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +45,21 @@ public class ItemService {
         } else {
             return itemMapper.toDto(itemRepository.findAll());
         }
+    }
+
+    public List<ItemDto> getItemByKeywordAndCategory(String keyword, Long categoryId) {
+        List<ItemDto> byKeyword = getItemByKeyword(keyword);
+        List<ItemDto> byCategory;
+        if (categoryId == -1) {
+            byCategory = getAllItems();
+        }
+        else {
+            byCategory = getAllItemsByCategory(categoryId);
+        }
+        return byKeyword.stream()
+                .distinct()
+                .filter(byCategory::contains)
+                .collect(Collectors.toList());
     }
 
     public Long getCategoryIdOfItem(Long itemId) {
@@ -99,6 +113,11 @@ public class ItemService {
         List<Category> childCategories = categoryService.getChildCategories(category.getId());
         List<Item> items = itemRepository.findAllByCategoryIn(childCategories);
         return itemMapper.toDto(items);
+    }
+
+    public List<ItemDto> getAllItemsByCategory(Long categoryId) {
+        Category category = categoryService.getCategoryById(categoryId);
+        return getAllItemsByCategory(category);
     }
 
     public Page<ItemDto> getAllItemsByCategoryPaginated(Long categoryId, int page, int size) {

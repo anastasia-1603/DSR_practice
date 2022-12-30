@@ -102,9 +102,22 @@ public class WebItemController {
         return "redirect:/web/items?categoryId=" + categoryId;
     }
 
+//    @GetMapping("/web/items/search")
+//    public String searchItem(Model model,
+//                             @RequestParam String keyword,
+//                             @RequestParam Long categoryId) {
+//        List<ItemDto> items = itemService.getItemByKeyword(keyword);
+//        List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
+//        model.addAttribute("items", items);
+//        model.addAttribute("categories", categories);
+//        return "search-result";
+//    }
+
     @GetMapping("/web/items/search")
-    public String searchItem(Model model, @RequestParam String keyword) {
-        List<ItemDto> items = itemService.getItemByKeyword(keyword);
+    public String searchItem(Model model,
+                             @RequestParam String keyword,
+                             @RequestParam Long categoryId) {
+        List<ItemDto> items = itemService.getItemByKeywordAndCategory(keyword, categoryId);
         List<CategoryViewDto> categories = categoryService.getAllCategoriesViewDto();
         model.addAttribute("items", items);
         model.addAttribute("categories", categories);
